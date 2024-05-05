@@ -16,8 +16,7 @@ WEBSEARCH_RESULT_MIN_TEXT_LENGTH = 30
 WEBSEARCH_NUM_RESULTS_SLICE = 3
 WEBSEARCH_READ_TIMEOUT_SECS = 5
 WEBSEARCH_CONNECT_TIMEOUT_SECS = 3
-
-WEBSEARCH_CONTENT_LIMIT_TOKENS = 1000 # TODO: implement
+WEBSEARCH_CONTENT_LIMIT_TOKENS = 1000 
 
 
 class WebSearchDocument:
@@ -34,6 +33,10 @@ def limit_tokens(input_string: str, N: int) -> str:
     tokens = input_string.split()
     limited_tokens = tokens[:N]
     return ' '.join(limited_tokens)
+
+def count_tokens(input_string: str) -> int:
+    tokens = input_string.split()
+    return len(tokens)
 
 def query_websearch(query: str)->list[WebSearchDocument]:
     url = f"https://www.googleapis.com/customsearch/v1?key={CONFIG['GOOGLE_SEARCH_API_KEY']}&cx={CONFIG['GOOGLE_SEARCH_ENGINE_ID']}&q={query}"
