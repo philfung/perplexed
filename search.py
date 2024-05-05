@@ -8,16 +8,18 @@ import sys
 import time
 import urllib.parse
 
+from rate_limiter import RateLimiter
+
 CONFIG = json.load(open('config.json'))
 GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
 GROQ_MODEL = 'mixtral-8x7b-32768'
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
-WEBSEARCH_RESULT_MIN_TEXT_LENGTH = 30
-WEBSEARCH_NUM_RESULTS_SLICE = 3
+WEBSEARCH_RESULT_MIN_TOKENS = 50
+WEBSEARCH_NUM_RESULTS_SLICE = 4
 WEBSEARCH_READ_TIMEOUT_SECS = 5
 WEBSEARCH_CONNECT_TIMEOUT_SECS = 3
 WEBSEARCH_CONTENT_LIMIT_TOKENS = 1000 
-
+LIMIT_TOKENS_PER_MINUTE = 500
 
 class WebSearchDocument:
     def __init__(self, id, title, url, text=''):
@@ -90,10 +92,11 @@ def scrape_webpage_threaded(websearch_doc):
 def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
     content_docs = ""
     for doc in websearch_docs:
-        if len(doc.text) < WEBSEARCH_RESULT_MIN_TEXT_LENGTH:
+        num_tokens = count_tokens(doc.text)
+        if num_tokens < WEBSEARCH_RESULT_MIN_TOKENS:
             continue
         content_docs += f"====\nDOCUMENT ID:{doc.id}\nDOCUMENT TITLE:{doc.title}\nDOCUMENT URL:{doc.url}\nDOCUMENT TEXT:{doc.text}\n"
-    system_prompt = "You are AI assistant for answering questions.  Using the provided documents, answer the user's question as thoroughly as possible.  Answer in a list of points, omitting inconclusive documents.  Format the answer as markdown.  After each sentence, cite the document information used using the syntax \"[document=ID]\".  Check over your work."
+    system_prompt = "You are AI assistant for answering questions.  Using the provided documents, answer the user's question as thoroughly as possible.  Answer in a list of points, omitting inconclusive documents.  Format the answer as markdown.  After each sentence, cite the document information used using the exact syntax \"[DOCUMENT ID:<ID>]\".  Check over your work."
 
     system_content = f"====SYSTEM PROMPT:{system_prompt}\n{content_docs}\n====QUESTION: {user_prompt}"
 
@@ -119,7 +122,15 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
     response_message = response.choices[0].message.content
     return response_message
 
-def search_all(user_prompt: str)->str:
+class SearchAllResponse:
+    def __init__(self, answer: str, num_tokens_used: int):
+        self.answer = answer
+        self.num_tokens_used = num_tokens_used
+
+    def __str__(self) -> str:
+        return f"Answer: {self.answer}\nTokens used: {self.num_tokens_used}"
+
+def search_all(user_prompt: str)->SearchAllResponse:
     time_start_google = time.time()
     print("----Querying Google...----")
     websearch_docs: list[WebSearchDocument] = query_websearch(user_prompt)
@@ -134,6 +145,8 @@ def search_all(user_prompt: str)->str:
     # for websearch_doc in websearch_docs_scraped:
     #     print(str(websearch_doc))
 
+    num_tokens_used = sum([count_tokens(doc.text) for doc in websearch_docs_scraped])
+
     time_start_groq = time.time()
     print("----Asking Groq...----")
 
@@ -141,9 +154,15 @@ def search_all(user_prompt: str)->str:
     print(answer)
     time_end = time.time()
     print(f"Perf: Total={time_end-time_start_google}s Google={time_start_scrape - time_start_google}s Scrape={time_start_groq-time_start_scrape}s Groq={time_end-time_start_groq}s")
-    return answer
+    return SearchAllResponse(answer=answer, num_tokens_used=num_tokens_used)
 
 if __name__ == "__main__":
-    user_prompt = "What is the best way to skin a cat?"
-    answer = search_all(user_prompt)
-    print(answer)
+    rate_limiter = RateLimiter(LIMIT_TOKENS_PER_MINUTE)
+    while True:
+        user_prompt = input("Enter your question: ")
+        if rate_limiter.is_over_limit():
+            print("Rate limit exceeded.  Please wait a minute before trying again.")
+        else:
+            response = search_all(user_prompt)
+            rate_limiter.record(num_tokens=response.num_tokens_used)
+            print(str(response))
