@@ -2,6 +2,7 @@ from enum import Enum
 import bs4
 import concurrent.futures
 import groq
+import os
 import pprint
 import requests
 import json
@@ -11,8 +12,10 @@ from typing import List, Callable
 import urllib.parse
 
 from rate_limiter import RateLimiter
+from typing import Callable, List
 
-CONFIG = json.load(open('./config.json'))
+current_dir_path = os.path.dirname(os.path.realpath(__file__))
+CONFIG = json.load(open(current_dir_path + '/config.json'))
 GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
 GROQ_MODEL = 'mixtral-8x7b-32768'
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
@@ -32,6 +35,14 @@ class WebSearchDocument:
     
     def __str__(self) -> str:
         return f"{self.title}\n{self.url}\n{self.text[:100]}"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'url': self.url,
+            'text': self.text
+        }
 
 def limit_tokens(input_string: str, N: int) -> str:
     tokens = input_string.split()
@@ -126,75 +137,7 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
 
 class SearchAllStage(Enum):
     STARTING = "Starting search"
-    QUERYING_GOOGLE = "Querying Google"
-    DOWNLOADING_WEBPAGES = "Downloading Webpages"
-    QUERYING_LLM = "Querying LLM"
+    QUERIED_GOOGLE = "Querying Google"
+    DOWNLOADED_WEBPAGES = "Downloading Webpages"
+    QUERIED_LLM = "Querying LLM"
     RESULTS_READY = "Results ready"
-
-class SearchAllResponse:
-    def __init__(self, answer: str, num_tokens_used: int, websearch_docs: list[WebSearchDocument]):
-        self.answer = answer
-        self.num_tokens_used = num_tokens_used
-        self.websearch_docs = websearch_docs
-
-    def __str__(self) -> str:
-        return f"Answer: {self.answer}\nTokens used: {self.num_tokens_used}\nWebsearch docs: {str(self.websearch_docs)}"
-
-SearchAllListenerType = Callable[[List[WebSearchDocument], SearchAllStage], None]
-
-
-def search_all(user_prompt: str, listener: SearchAllListenerType)->SearchAllResponse:
-    time_start_google = time.time()
-    if listener:
-        listener([], SearchAllStage.QUERYING_GOOGLE)
-
-    websearch_docs: list[WebSearchDocument] = query_websearch(user_prompt)
-
-    websearch_docs_scraped = []
-    time_start_scrape = time.time()
-
-    if listener:
-        listener(websearch_docs, SearchAllStage.DOWNLOADING_WEBPAGES)
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        websearch_docs_scraped = list(executor.map(scrape_webpage_threaded, websearch_docs))
-
-    num_tokens_used = sum([count_tokens(doc.text) for doc in websearch_docs_scraped])
-
-    time_start_groq = time.time()
-    if listener:
-        listener(websearch_docs_scraped, SearchAllStage.QUERYING_LLM)
-
-    answer = query_chatbot(user_prompt, websearch_docs_scraped)
-    time_end = time.time()
-    if listener:
-        listener(websearch_docs_scraped, SearchAllStage.RESULTS_READY)
-    print(f"Perf: Total={time_end-time_start_google}s Google={time_start_scrape - time_start_google}s Scrape={time_start_groq-time_start_scrape}s Groq={time_end-time_start_groq}s")
-    return SearchAllResponse(answer=answer, num_tokens_used=num_tokens_used, websearch_docs=websearch_docs_scraped)
-
-def search_all_listener(websearch_docs: List[WebSearchDocument], stage: SearchAllStage):
-    if stage == SearchAllStage.QUERYING_GOOGLE:
-        print("Querying Google...")
-
-    elif stage == SearchAllStage.DOWNLOADING_WEBPAGES:
-        for doc in websearch_docs:
-            print(f"{doc.id}: {doc.title}; {doc.url}")
-        print("Downloading webpages...")
-    elif stage == SearchAllStage.QUERYING_LLM:
-        print("Querying LLM...")
-    elif stage == SearchAllStage.RESULTS_READY:
-        print("Results ready")
-        # for doc in websearch_docs:
-        #     print(str(doc))
-        
-
-if __name__ == "__main__":
-    rate_limiter = RateLimiter(LIMIT_TOKENS_PER_MINUTE)
-    while True:
-        user_prompt = input("Enter your question: ")
-        if rate_limiter.is_over_limit():
-            print("Rate limit exceeded.  Please wait a minute before trying again.")
-        else:
-            response = search_all(user_prompt=user_prompt, listener=search_all_listener)
-            rate_limiter.record(num_tokens=response.num_tokens_used)
-            print(str(response))
