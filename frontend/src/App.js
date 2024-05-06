@@ -35,8 +35,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <p className="font-bold text-yellow-500">Hello</p>
         <input type="text" value={userPrompt} onChange={e => setUserPrompt(e.target.value)} />
-        <button onClick={search}>Search1</button>
+        <button className="text-yellow-500" onClick={search}>Search2</button>
         <p>Stage: {stage}</p>
         <p>Response: {JSON.stringify(response)}</p>
       </header>
