@@ -2,6 +2,7 @@ from typing import List
 import concurrent.futures
 from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
+import html
 import json
 from search import SearchAllStage, WebSearchDocument, count_tokens, query_chatbot, query_websearch, scrape_webpage_threaded, LIMIT_TOKENS_PER_MINUTE
 from rate_limiter import RateLimiter
@@ -32,7 +33,8 @@ class StreamSearchResponse:
 def stream_search():
     data = request.get_json()
     user_prompt = data.get('user_prompt')
-
+    if not user_prompt:
+        return jsonify({'success': False, 'message': 'Please provide a user prompt.'})
     def generate():
         if rate_limiter.is_over_limit():
             yield json.dumps({

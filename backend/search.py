@@ -2,6 +2,7 @@ from enum import Enum
 import bs4
 import concurrent.futures
 import groq
+import html
 import os
 import pprint
 import requests
@@ -29,9 +30,9 @@ LIMIT_TOKENS_PER_MINUTE = 5000
 class WebSearchDocument:
     def __init__(self, id, title, url, text=''):
         self.id = id
-        self.title = title
+        self.title = html.escape(title)
         self.url = url
-        self.text = text
+        self.text = html.escape(text)
     
     def __str__(self) -> str:
         return f"{self.title}\n{self.url}\n{self.text[:100]}"
