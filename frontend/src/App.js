@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Constants} from './constants';
 import logo from './logo.svg';
 import './App.css';
 
@@ -8,13 +9,13 @@ function App() {
   const [stage, setStage] = useState('');
 
   const search = async () => {
-    const res = await fetch('http://127.0.0.1:5000/stream_search', {
+    const res = await fetch(Constants.API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ user_prompt: userPrompt })
-    });    const reader = res.body.getReader();
+    }); const reader = res.body.getReader();
     const decoder = new TextDecoder('utf-8');
 
     reader.read().then(function processText({ done, value }) {
