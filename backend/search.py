@@ -18,7 +18,9 @@ from typing import Callable, List
 current_dir_path = os.path.dirname(os.path.realpath(__file__))
 CONFIG = json.load(open(current_dir_path + '/config.json'))
 GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
-GROQ_MODEL = 'mixtral-8x7b-32768'
+# GROQ_MODEL = 'mixtral-8x7b-32768'
+GROQ_MODEL = 'llama3-8b-8192'
+JSON_STREAM_SEPARATOR = "[/PERPLEXED-SEPARATOR]"
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
 WEBSEARCH_RESULT_MIN_TOKENS = 50
 WEBSEARCH_NUM_RESULTS_SLICE = 4

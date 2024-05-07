@@ -4,13 +4,15 @@ from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
 import html
 import json
-from search import SearchAllStage, WebSearchDocument, count_tokens, query_chatbot, query_websearch, scrape_webpage_threaded, LIMIT_TOKENS_PER_MINUTE
+from search import SearchAllStage, WebSearchDocument, count_tokens, query_chatbot, query_websearch, scrape_webpage_threaded, LIMIT_TOKENS_PER_MINUTE, JSON_STREAM_SEPARATOR
 from rate_limiter import RateLimiter
 import time
 
 app = Flask(__name__)
 CORS(app, resources={r"/stream_search": {"origins": "http://localhost:3000"}})
 rate_limiter = RateLimiter(LIMIT_TOKENS_PER_MINUTE)
+
+
 
 class StreamSearchResponse:
     def __init__(self, success: bool, stage: SearchAllStage, num_tokens_used: int, websearch_docs: List[WebSearchDocument], answer="") -> None:
@@ -21,13 +23,13 @@ class StreamSearchResponse:
         self.answer = answer
 
     def to_json_data(self):
-        return json.dumps({
+        return (json.dumps({
                     'success': self.success,
                     'stage': self.stage.value,
                     'num_tokens_used': self.num_tokens_used,
                     'websearch_docs': [doc.to_dict() for doc in self.websearch_docs],
                     'answer': self.answer
-        }).encode('utf-8')
+        }) + JSON_STREAM_SEPARATOR).encode('utf-8') 
 
 @app.route('/stream_search', methods=['POST'])
 def stream_search():

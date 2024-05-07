@@ -29,6 +29,9 @@ module.exports = {
       },
       spacing: {
         'header-height': '100px',
+      },
+      width: {
+      'width-percent-45': '45%'
       }
     },
   },
