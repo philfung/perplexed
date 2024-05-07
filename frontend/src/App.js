@@ -120,20 +120,25 @@ function App() {
     return parsedUrl.protocol + "//" + parsedUrl.hostname + "/favicon.ico";
   }
 
-
+  let searchExamples = [
+    {emoji:'🍋' ,text: 'Health benefits of lemon water'},
+    {emoji:'🪗' ,text: 'Are accordians French?'},
+    {emoji:'🚀' ,text: 'Who are the Guardians of the Galaxy?'},
+    {emoji:'⚽' ,text: 'Who are the best soccer players of all time'},
+  ]
 
   return (
     <div className="App">
       {!userPrompt &&
 
-        <div className="input-page bg-pp-bg-dark-grey h-screen">
-          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center ml-4 mr-4 ">
+        <div className="input-page bg-pp-bg-dark-grey flex flex-col h-screen">
+          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center ml-4 mr-4 w-full">
             <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
             <div className="header-text flex font-extralight text-3xl text-pp-text-white">perplexed</div>
           </div>
-          <div className="main-center-stuff flex flex-col h-full">
-            <div className="welcome-slogan flex font-extralight font-fkgr mb-8 px-4 text-4xl text-pp-text-white">Ask questions, get answers</div>
-            <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col mx-4 pl-4 pr-2 pt-4 pb-2 rounded-md">
+          <div className="main-center-stuff flex flex-col mx-4 mt-1/8-screen">
+            <div className="welcome-slogan flex font-extralight font-fkgr mb-8 text-4xl text-pp-text-white">Ask questions, get answers</div>
+            <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col pl-4 pr-2 pt-4 pb-2 rounded-md">
               <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-16 placeholder-pp-text-grey text-15 text-pp-text-white"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
@@ -151,8 +156,15 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="search-examples flex">
-              <div className="search-example"><img src="" /><span>Are accordions French?</span></div>
+            <div className="search-examples flex flex-row flex-wrap mt-7">
+              {searchExamples.map((example, i) => (
+                <div key={i} className="search-example border border-gray-800 flex flex-row items-center mx-1 my-1 rounded-full">
+                  <div className="search-example-emoji ml-1">{example.emoji}</div>
+                  <div className="search-example-text font-fkgr inline-block ml-1 mr-1 text-sm text-gray-500">{example.text}</div>
+                </div>
+              ))
+            }
+
             </div>
           </div>
         </div>

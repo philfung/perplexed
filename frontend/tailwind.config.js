@@ -29,6 +29,7 @@ module.exports = {
       },
       spacing: {
         'header-height': '100px',
+        '1/8-screen': '12.5vh'
       },
       width: {
       'width-percent-45': '45%'
