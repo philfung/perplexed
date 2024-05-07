@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Constants } from './constants';
 import ReactMarkdown from 'react-markdown'
 import logo from './logo.svg';
@@ -40,6 +40,12 @@ function App() {
     setUserPrompt('');
     setSearchResponse(null);
   };
+
+  function goHome() {
+    resetSearch();
+    window.scrollTo(0, 0);
+    window.location.reload();
+  }
 
   const submitSearch = async (submittedUserPrompt) => {
     console.log("SUBMISEARCH:" + submittedUserPrompt);
@@ -114,11 +120,13 @@ function App() {
     return parsedUrl.protocol + "//" + parsedUrl.hostname + "/favicon.ico";
   }
 
+
+
   return (
     <div className="App">
       {!userPrompt &&
 
-        <div className="input-page bg-pp-bg-dark-grey h-full">
+        <div className="input-page bg-pp-bg-dark-grey h-screen">
           <div className="header border-b border-gray-800 flex flex-row h-header-height items-center ml-4 mr-4 ">
             <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
             <div className="header-text flex font-extralight text-3xl text-pp-text-white">perplexed</div>
@@ -126,7 +134,7 @@ function App() {
           <div className="main-center-stuff flex flex-col h-full">
             <div className="welcome-slogan flex font-extralight font-fkgr mb-8 px-4 text-4xl text-pp-text-white">Ask questions, get answers</div>
             <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col mx-4 pl-4 pr-2 pt-4 pb-2 rounded-md">
-              <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline font-fkgrneue font-light h-16 placeholder-pp-text-grey text-15 text-pp-text-white"
+              <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-16 placeholder-pp-text-grey text-15 text-pp-text-white"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     console.log(e);
@@ -151,8 +159,10 @@ function App() {
       }
       {
         userPrompt &&
-        <div className="results-page bg-pp-bg-dark-grey h-full">
-          <div className="header border-b border-gray-800 flex flex-row h-11 items-center pl-3">
+        <div className="results-page bg-pp-bg-dark-grey min-h-screen">
+          <div className="header border-b border-gray-800 flex flex-row h-11 items-center pl-3"
+            onClick={() => { goHome(); }}
+          >
             <img className="logo-white flex h-8" src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
             <div className="flex font-extralight ml-1 text-xl text-pp-text-white">perplexed</div>
           </div>
@@ -198,7 +208,7 @@ function App() {
                   <div className="answer-header-icon flex h-6"><img src={process.env.PUBLIC_URL + "/images/logo-white.svg"} /></div>
                   <div className="answer-header-text flex font-regular font-fkgr ml-2 text-lg text-pp-text-white ">Answer</div>
                 </div>
-                <div className="answer-text">{
+                <div className="answer-text font-extralight font-fkgrneue text-md text-pp-text-white">{
                   <ReactMarkdown>
                     {searchResponse.answer}
                   </ReactMarkdown>
