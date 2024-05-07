@@ -92,17 +92,35 @@ function App() {
     <div className="App">
       {!userPrompt &&
 
-        <div className="input-page">
-          <div>Enter your search query:</div>
-          {<input name="search-input" type="text"
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                console.log(e);
-                submitSearch(e.target.value);
-              }
-            }}
-
-          />}
+        <div className="input-page bg-pp-bg-dark-grey h-full">
+          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center ml-4 mr-4 ">
+            <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
+            <div className="header-text flex font-extralight text-3xl text-pp-text-white">perplexed</div>
+          </div>
+          <div className="main-center-stuff flex flex-col h-full">
+            <div className="welcome-slogan flex font-extralight font-fkgr mb-8 px-4 text-4xl text-pp-text-white">Ask questions, get answers</div>
+            <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col mx-4 pl-4 pr-2 pt-4 pb-2 rounded-md">
+              <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline font-fkgrneue font-light h-16 placeholder-pp-text-grey text-15 text-pp-text-white"
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    console.log(e);
+                    submitSearch(e.target.value);
+                  }
+                }}
+                placeholder='Ask Anything...'>
+              </textarea>
+              <div className="search-lower-bar flex flex-row justify-end">
+                <div className="search-lower-bar-arrow bg-pp-button-grey flex flex-row w-8 h-8  rounded-full">
+                  <img className="search-submit-button mx-auto w-5" src={process.env.PUBLIC_URL + '/images/arrow_submit.svg'} alt="submit" 
+                  onClick={() => { submitSearch(document.getElementById('search-input').value); }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="search-examples flex">
+              <div className="search-example"><img src="" /><span>Are accordions French?</span></div>
+            </div>
+          </div>
         </div>
       }
       {
@@ -144,7 +162,7 @@ function App() {
           }
           {
             <div className="new-search">
-              <button onClick={() => {resetSearch();}}>New Search</button>
+              <button onClick={() => { resetSearch(); }}>New Search</button>
             </div>
           }
 
