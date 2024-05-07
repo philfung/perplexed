@@ -58,8 +58,8 @@ function App() {
         console.log('Stream complete');
         return;
       }
-      console.log("processText");
-      console.log(decoder.decode(value));
+      // console.log("processText");
+      // console.log(decoder.decode(value));
 
       let blobs = decoder.decode(value).split(Constants.JSON_STREAM_SEPARATOR);
 
