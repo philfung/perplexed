@@ -18,7 +18,7 @@ from typing import Callable, List
 current_dir_path = os.path.dirname(os.path.realpath(__file__))
 CONFIG = json.load(open(current_dir_path + '/config.json'))
 GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
-# GROQ_MODEL = 'mixtral-8x7b-32768'
+#GROQ_MODEL = 'mixtral-8x7b-32768'
 GROQ_MODEL = 'llama3-8b-8192'
 JSON_STREAM_SEPARATOR = "[/PERPLEXED-SEPARATOR]"
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
@@ -112,7 +112,7 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
         if num_tokens < WEBSEARCH_RESULT_MIN_TOKENS:
             continue
         content_docs += f"====\nDOCUMENT ID:{doc.id}\nDOCUMENT TITLE:{doc.title}\nDOCUMENT URL:{doc.url}\nDOCUMENT TEXT:{doc.text}\n"
-    system_prompt = "You are AI assistant for answering questions.  Using the provided documents, answer the user's question as thoroughly as possible.  Answer in a list of points, omitting inconclusive documents.  Format the answer as markdown.  After each sentence, cite the document information used using the exact syntax \"[DOCUMENT ID:<ID>]\".  Check over your work."
+    system_prompt = "You are AI assistant for answering questions.  Using the provided documents, answer the user's question as thoroughly as possible.  Answer in a list of points, omitting inconclusive documents.  Format the answer as markdown.  After each sentence, cite the document information used using the exact syntax \"[DOCUMENT ID:<ID>]\".  Check over your work. Remember to cite the source after each sentence with the syntax \"[DOCUMENT ID:ID]\". "
 
     system_content = f"====SYSTEM PROMPT:{system_prompt}\n{content_docs}\n====QUESTION: {user_prompt}"
 
