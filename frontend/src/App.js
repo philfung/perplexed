@@ -49,7 +49,7 @@ function App() {
   }
 
   const submitSearch = async (submittedUserPrompt) => {
-    console.log("SUBMISEARCH:" + submittedUserPrompt);
+    // console.log("SUBMISEARCH:" + submittedUserPrompt);
     setUserPrompt(submittedUserPrompt);
     const res = await fetch(Constants.API_URL, {
       method: 'POST',
@@ -60,6 +60,8 @@ function App() {
     }); const reader = res.body.getReader();
     const decoder = new TextDecoder('utf-8');
 
+    let buffer = '';
+
     reader.read().then(function processText({ done, value }) {
       if (done) {
         console.log('Stream complete');
@@ -68,22 +70,19 @@ function App() {
       // console.log("processText");
       // console.log(decoder.decode(value));
 
-      let blobs = decoder.decode(value).split(Constants.JSON_STREAM_SEPARATOR);
-
-      for (let i = 0; i < blobs.length; i++) {
-
-        const blob = blobs[i];
-
-        // last blob with be empty
-        if (blob.trim() === '') {
-          continue;
+      buffer += decoder.decode(value);
+      let boundary = buffer.indexOf(Constants.JSON_STREAM_SEPARATOR);
+      while (boundary !== -1) {
+        let input = buffer.substring(0, boundary);
+        buffer = buffer.substring(boundary + Constants.JSON_STREAM_SEPARATOR.length);
+        if (input.trim() === '') {
+          return;
         }
+        let result = JSON.parse(input);
+        boundary = buffer.indexOf(Constants.JSON_STREAM_SEPARATOR);
 
-        const result = JSON.parse(blob);
         const isSuccess = result.success;
         const error_message = isSuccess ? '' : result.message;
-
-        console.log(result);
 
         if (isSuccess) {
           setSearchResponse(new SearchResponse(
@@ -106,6 +105,7 @@ function App() {
           return;
         };
       }
+
       reader.read().then(processText);
     });
   };
