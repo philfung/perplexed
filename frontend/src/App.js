@@ -162,7 +162,7 @@ function App() {
                   onClick={() => { submitSearch(example.text); }}
                 >
                   <div className="search-example-emoji ml-1">{example.emoji}</div>
-                  <div className="search-example-text font-fkgr inline-block ml-1 mr-1 text-sm text-gray-500">{example.text}</div>
+                  <div className="search-example-text font-fkgr inline-block ml-2 mr-1 text-sm text-gray-500">{example.text}</div>
                 </div>
               ))
             }
