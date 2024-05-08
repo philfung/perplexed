@@ -4,13 +4,13 @@ from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
 import html
 import json
-from search import SearchAllStage, WebSearchDocument, count_tokens, query_chatbot, query_websearch, scrape_webpage_threaded, LIMIT_TOKENS_PER_MINUTE, JSON_STREAM_SEPARATOR
+from search import SearchAllStage, WebSearchDocument, count_tokens, query_chatbot, query_websearch, scrape_webpage_threaded, DOMAINS_ALLOW, GROQ_LIMIT_TOKENS_PER_MINUTE, JSON_STREAM_SEPARATOR
 from rate_limiter import RateLimiter
 import time
 
 app = Flask(__name__)
-CORS(app, resources={r"/stream_search": {"origins": "http://localhost:3000"}})
-rate_limiter = RateLimiter(LIMIT_TOKENS_PER_MINUTE)
+CORS(app, resources={r"/stream_search": {"origins": DOMAINS_ALLOW}})
+rate_limiter = RateLimiter(GROQ_LIMIT_TOKENS_PER_MINUTE)
 
 
 

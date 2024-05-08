@@ -17,17 +17,18 @@ from typing import Callable, List
 
 current_dir_path = os.path.dirname(os.path.realpath(__file__))
 CONFIG = json.load(open(current_dir_path + '/config.json'))
+DOMAINS_ALLOW = CONFIG['DOMAINS_ALLOW']
+JSON_STREAM_SEPARATOR = "[/PERPLEXED-SEPARATOR]"
 GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
 #GROQ_MODEL = 'mixtral-8x7b-32768'
 GROQ_MODEL = 'llama3-8b-8192'
-JSON_STREAM_SEPARATOR = "[/PERPLEXED-SEPARATOR]"
+GROQ_LIMIT_TOKENS_PER_MINUTE = 30000
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
 WEBSEARCH_RESULT_MIN_TOKENS = 50
 WEBSEARCH_NUM_RESULTS_SLICE = 4
 WEBSEARCH_READ_TIMEOUT_SECS = 5
 WEBSEARCH_CONNECT_TIMEOUT_SECS = 3
 WEBSEARCH_CONTENT_LIMIT_TOKENS = 1000 
-LIMIT_TOKENS_PER_MINUTE = 5000
 
 class WebSearchDocument:
     def __init__(self, id, title, url, text=''):
