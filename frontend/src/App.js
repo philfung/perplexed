@@ -138,12 +138,12 @@ function App() {
               <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
               <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">perplexed</div>
             </div>
-            <a className="flex" href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">
+            <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
               <img className="github flex opacity-50 w-10" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
             </a>
           </div>
           <div className="main-center-stuff flex flex-col mx-4 mt-1/8-screen">
-            <div className="welcome-slogan flex font-extralight font-fkgr mb-8 text-4xl text-pp-text-white">Ask questions, get answers</div>
+            <div className="welcome-slogan flex font-extralight font-fkgr mb-8 select-none text-4xl text-pp-text-white">Ask questions, get answers</div>
             <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col pl-4 pr-2 pt-4 pb-2 rounded-md">
               <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-16 placeholder-pp-text-grey text-15 text-pp-text-white"
                 onKeyDown={e => {
@@ -188,13 +188,13 @@ function App() {
                    src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
               <div className="flex font-extralight ml-1 select-none text-xl text-pp-text-white">perplexed</div>
             </div>
-            <a className="flex" href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">
+            <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
               <img className="github flex opacity-50 mr-4 w-7" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
             </a>
           </div>
           <div className="results-container px-4">
 
-            <div className="query font-light font-fkgr mt-8 mb-3 text-3xl text-pp-text-white">{userPrompt}</div>
+            <div className="query font-light font-fkgr mt-8 mb-3 select-none text-3xl text-pp-text-white">{userPrompt}</div>
             {
               searchResponse && !searchResponse.success &&
               <div className="error font-light font-fkgr mt-4 text-xl text-red-500">
