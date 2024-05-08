@@ -4,7 +4,7 @@ Open-source app inspired by the amazing web search product, Perplexity.
 [Live Demo](https://philfung.github.io/perplexed)
 
 <img width="279" alt="Screenshot 2024-05-08 at 1 23 35 PM" src="https://github.com/philfung/perplexed/assets/1054593/28ac5a06-abc6-4a8d-ab60-36f3e1f1e596">
-<img width="279" alt="Screenshot 2024-05-08 at 1 24 33 PM" src="https://github.com/philfung/perplexed/assets/1054593/a932819e-6e24-45c6-9138-234e1870a558">
+<img width="277" alt="Screenshot 2024-05-08 at 1 24 33 PM" src="https://github.com/philfung/perplexed/assets/1054593/a932819e-6e24-45c6-9138-234e1870a558">
 
 ## Implementation
 Given a user query, the app conducts a web search,
