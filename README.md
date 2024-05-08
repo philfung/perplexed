@@ -1,4 +1,11 @@
-TODO
+## Perplexed 
+Open-source app inspired by the amazing web search app, Perplexity.
+
+## Installation
+
+## TODO
+
+
 
 - [x] style results page
 - [x] start page, fix long page with white
@@ -9,6 +16,6 @@ TODO
 - [x] loader animation
 - [ ] desktop view
 - [ ] results page: annotate results
-- [ ] upload to aws
+- [x ] upload to aws
 - [ ] README
 - [x ] checkin code

@@ -136,7 +136,7 @@ function App() {
           <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-4 mr-4">
             <div className="logo-container flex flex-row">
               <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
-              <div className="header-text flex font-extralight text-3xl text-pp-text-white">perplexed</div>
+              <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">perplexed</div>
             </div>
             <a className="flex" href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">
               <img className="github flex opacity-50 w-10" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
@@ -186,7 +186,7 @@ function App() {
               <img className="logo-white flex h-8" 
                    onClick={() => { goHome(); }} 
                    src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
-              <div className="flex font-extralight ml-1 text-xl text-pp-text-white">perplexed</div>
+              <div className="flex font-extralight ml-1 select-none text-xl text-pp-text-white">perplexed</div>
             </div>
             <a className="flex" href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">
               <img className="github flex opacity-50 mr-4 w-7" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
