@@ -12,7 +12,9 @@ app = Flask(__name__)
 CORS(app, resources={r"/stream_search": {"origins": DOMAINS_ALLOW}})
 rate_limiter = RateLimiter(GROQ_LIMIT_TOKENS_PER_MINUTE)
 
-
+@app.route('/test', methods=['GET'])
+def test():
+    return 'HELLO'
 
 class StreamSearchResponse:
     def __init__(self, success: bool, stage: SearchAllStage, num_tokens_used: int, websearch_docs: List[WebSearchDocument], answer="") -> None:
@@ -67,4 +69,4 @@ def stream_search():
     return Response(stream_with_context(generate()), mimetype='application/json')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
