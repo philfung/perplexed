@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Constants } from './constants';
 import ReactMarkdown from 'react-markdown'
 import './App.css';
+import {Instagram, Facebook} from "react-content-loader"
+
 
 const SearchStage = {
   STARTING: "Starting search",
@@ -217,6 +219,12 @@ function App() {
                 </div>
               </div>
             }
+              {
+                searchResponse && !searchResponse.answer && 
+                <div className="results-loader opacity-50 ml-1 mt-8 w-3/4">
+                  <Facebook animate={true} speed={2} />
+                </div>
+              }
             {searchResponse && searchResponse.success && searchResponse.answer &&
               <div className="answer mt-5">
                 <div className="answer-header flex flex-row items-center mb-2">
