@@ -224,7 +224,7 @@ function App() {
                   <div className="answer-header-icon flex h-6"><img src={process.env.PUBLIC_URL + "/images/logo-white.svg"} /></div>
                   <div className="answer-header-text flex font-regular font-fkgr ml-2 text-lg text-pp-text-white ">Answer</div>
                 </div>
-                <div className="answer-text font-extralight font-fkgrneue mb-20 text-md text-pp-text-white">{
+                <div className="answer-text font-extralight font-fkgrneue pb-20 text-md text-pp-text-white">{
                   <ReactMarkdown>
                     {searchResponse.answer}
                   </ReactMarkdown>
