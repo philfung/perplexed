@@ -9,6 +9,7 @@ import requests
 import json
 import sys
 import time
+import re
 from typing import List, Callable
 import urllib.parse
 
@@ -106,6 +107,10 @@ def scrape_webpage_threaded(websearch_doc):
     websearch_doc.text = text
     return websearch_doc
 
+doc_id_regex = re.compile(r'DOCUMENT ID:(\d+)', re.IGNORECASE)
+def replace_documents_with_markdown(text: str)->str:
+    return doc_id_regex.sub(r'**\[\1\]**', text)
+
 def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
     content_docs = ""
     for doc in websearch_docs:
@@ -137,6 +142,7 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
     )
 
     response_message = response.choices[0].message.content
+    response_message = replace_documents_with_markdown(response_message)
     return response_message
 
 class SearchAllStage(Enum):
