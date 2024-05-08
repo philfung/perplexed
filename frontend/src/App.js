@@ -232,8 +232,8 @@ function App() {
               </div>
             }
             {
-              <div className="new-search">
-                <button onClick={() => { resetSearch(); }}>New Search</button>
+              <div className="new-search bg-pp-bg-light-grey border border-gray-600 bottom-2 fixed flex flex-row h-14 items-center left-1/2 rounded-full text-gray-500 text-lg transform -translate-x-1/2 w-11/12">
+                <button className="ml-10" onClick={() => { resetSearch(); }}>Ask follow-up..</button>
               </div>
             }
           </div>
