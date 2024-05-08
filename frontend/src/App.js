@@ -158,7 +158,9 @@ function App() {
             </div>
             <div className="search-examples flex flex-row flex-wrap mt-7">
               {searchExamples.map((example, i) => (
-                <div key={i} className="search-example border border-gray-800 flex flex-row items-center mx-1 my-1 rounded-full">
+                <div key={i} className="search-example border border-gray-800 flex flex-row items-center mx-1 my-1 rounded-full"
+                  onClick={() => { submitSearch(example.text); }}
+                >
                   <div className="search-example-emoji ml-1">{example.emoji}</div>
                   <div className="search-example-text font-fkgr inline-block ml-1 mr-1 text-sm text-gray-500">{example.text}</div>
                 </div>
@@ -204,7 +206,9 @@ function App() {
                       <div key={i} className="source-result bg-pp-bg-light-grey flex-col m-1 px-2 py-3 rounded-md w-width-percent-45">
                         <a className="source-link flex font-fkgrneue max-h-8 overflow-hidden text-xs text-pp-text-white" href={doc.url} rel="noopener noreferrer" target="_blank" >{doc.title}</a>
                         <div className="source-result-bottom text-gray-500 flex flex-row font-fkgr items-center mt-2 text-xs">
-                          <img className="favicon flex h-3" src={getFaviconUrl(doc.url)} />
+                          <img className="favicon flex h-3" src={getFaviconUrl(doc.url)} 
+                            onError={(e) => { e.target.onerror = null; e.target.src = process.env.PUBLIC_URL + "/images/earth-blue.svg"; }}
+                          />
                           <div className="website flex ml-2">{getDomainasWord(doc.url)}</div>
                           <div className="number flex ml-1">{"• " + (i + 1)}</div>
                         </div>
@@ -220,7 +224,7 @@ function App() {
                   <div className="answer-header-icon flex h-6"><img src={process.env.PUBLIC_URL + "/images/logo-white.svg"} /></div>
                   <div className="answer-header-text flex font-regular font-fkgr ml-2 text-lg text-pp-text-white ">Answer</div>
                 </div>
-                <div className="answer-text font-extralight font-fkgrneue text-md text-pp-text-white">{
+                <div className="answer-text font-extralight font-fkgrneue mb-20 text-md text-pp-text-white">{
                   <ReactMarkdown>
                     {searchResponse.answer}
                   </ReactMarkdown>
