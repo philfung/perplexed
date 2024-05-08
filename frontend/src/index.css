@@ -17,6 +17,15 @@
   src:  url('/public/fonts/fk-gr.woff2') format('woff2'),
 }
 
+@keyframes pulseAnimation {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 html {
  
 }

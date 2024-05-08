@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Constants } from './constants';
 import ReactMarkdown from 'react-markdown'
 import './App.css';
-import {Instagram, Facebook} from "react-content-loader"
+import { Facebook } from "react-content-loader"
 
 
 const SearchStage = {
@@ -122,10 +122,10 @@ function App() {
   }
 
   let searchExamples = [
-    {emoji:'🍋' ,text: 'Health benefits of lemon water'},
-    {emoji:'🪗' ,text: 'Are accordians French?'},
-    {emoji:'🚀' ,text: 'Who are the Guardians of the Galaxy?'},
-    {emoji:'⚽' ,text: 'Who are the best soccer players of all time'},
+    { emoji: '🍋', text: 'Health benefits of lemon water' },
+    { emoji: '🪗', text: 'Are accordians French?' },
+    { emoji: '🚀', text: 'Who are the Guardians of the Galaxy?' },
+    { emoji: '⚽', text: 'Who are the best soccer players of all time' },
   ]
 
   return (
@@ -133,9 +133,14 @@ function App() {
       {!userPrompt &&
 
         <div className="input-page bg-pp-bg-dark-grey flex flex-col h-screen">
-          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center ml-4 mr-4 w-full">
-            <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
-            <div className="header-text flex font-extralight text-3xl text-pp-text-white">perplexed</div>
+          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-4 mr-4">
+            <div className="logo-container flex flex-row">
+              <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
+              <div className="header-text flex font-extralight text-3xl text-pp-text-white">perplexed</div>
+            </div>
+            <a className="flex" href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">
+              <img className="github flex opacity-50 w-10" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
+            </a>
           </div>
           <div className="main-center-stuff flex flex-col mx-4 mt-1/8-screen">
             <div className="welcome-slogan flex font-extralight font-fkgr mb-8 text-4xl text-pp-text-white">Ask questions, get answers</div>
@@ -166,24 +171,26 @@ function App() {
                   <div className="search-example-text font-fkgr inline-block ml-2 mr-1 text-sm text-gray-500">{example.text}</div>
                 </div>
               ))
-            }
+              }
 
             </div>
           </div>
-          <div className="github bottom-16 fixed left-1/2 transform -translate-x-1/2 text-gray-600 text-lg">
-            <a href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">Source</a>
-          </div>
-            
+
         </div>
       }
       {
         userPrompt &&
         <div className="results-page bg-pp-bg-dark-grey min-h-screen">
-          <div className="header border-b border-gray-800 flex flex-row h-11 items-center pl-3"
-            onClick={() => { goHome(); }}
-          >
-            <img className="logo-white flex h-8" src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
-            <div className="flex font-extralight ml-1 text-xl text-pp-text-white">perplexed</div>
+          <div className="header border-b border-gray-800 flex flex-row h-11 items-center justify-between pl-3">
+            <div className="logo-container flex flex-row">
+              <img className="logo-white flex h-8" 
+                   onClick={() => { goHome(); }} 
+                   src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
+              <div className="flex font-extralight ml-1 text-xl text-pp-text-white">perplexed</div>
+            </div>
+            <a className="flex" href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">
+              <img className="github flex opacity-50 mr-4 w-7" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
+            </a>
           </div>
           <div className="results-container px-4">
 
@@ -211,7 +218,7 @@ function App() {
                       <div key={i} className="source-result bg-pp-bg-light-grey flex-col m-1 px-2 py-3 rounded-md w-width-percent-45">
                         <a className="source-link flex font-fkgrneue max-h-8 overflow-hidden text-xs text-pp-text-white" href={doc.url} rel="noopener noreferrer" target="_blank" >{doc.title}</a>
                         <div className="source-result-bottom text-gray-500 flex flex-row font-fkgr items-center mt-2 text-xs">
-                          <img className="favicon flex h-3" src={getFaviconUrl(doc.url)} 
+                          <img className="favicon flex h-3" src={getFaviconUrl(doc.url)}
                             onError={(e) => { e.target.onerror = null; e.target.src = process.env.PUBLIC_URL + "/images/earth-blue.svg"; }}
                           />
                           <div className="website flex ml-2">{getDomainasWord(doc.url)}</div>
@@ -224,8 +231,8 @@ function App() {
               </div>
             }
             {
-              searchResponse && !searchResponse.answer && 
-              <div className="results-loader opacity-50 ml-1 mt-8 w-3/4">
+              searchResponse && !searchResponse.answer &&
+              <div className="results-loader animate-pulse opacity-50 ml-1 mt-8 w-3/4">
                 <Facebook animate={true} speed={2} />
               </div>
             }

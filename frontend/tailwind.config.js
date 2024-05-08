@@ -7,6 +7,9 @@ module.exports = {
 
 
     extend: {
+      animation: {
+        'pulse': 'pulseAnimation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
       boxShadow: {
         'outline': '0 0 0 3px rgba(66, 153, 225, 0.5)',
       },
