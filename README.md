@@ -5,9 +5,10 @@ TODO
 - [x] results page, fix long page with white
 - [x] result sources, fix icons
 - [ ] dmn
-- [ ] github link
-- [ ] loader animation
+- [x] github link
+- [x] loader animation
 - [ ] desktop view
 - [ ] results page: annotate results
 - [ ] upload to aws
-- [ ] checkin code
+- [ ] README
+- [x ] checkin code

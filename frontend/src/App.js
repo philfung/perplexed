@@ -159,7 +159,7 @@ function App() {
             </div>
             <div className="search-examples flex flex-row flex-wrap mt-7">
               {searchExamples.map((example, i) => (
-                <div key={i} className="search-example border border-gray-800 flex flex-row items-center mx-1 my-1 rounded-full"
+                <div key={i} className="search-example border border-gray-900 flex flex-row items-center mx-1 my-1 rounded-full"
                   onClick={() => { submitSearch(example.text); }}
                 >
                   <div className="search-example-emoji ml-1">{example.emoji}</div>
@@ -170,6 +170,10 @@ function App() {
 
             </div>
           </div>
+          <div className="github bottom-16 fixed left-1/2 transform -translate-x-1/2 text-gray-600 text-lg">
+            <a href="https://github.com/philfung/perplexed" target="_blank" rel="noopener noreferrer">Source</a>
+          </div>
+            
         </div>
       }
       {
@@ -219,12 +223,12 @@ function App() {
                 </div>
               </div>
             }
-              {
-                searchResponse && !searchResponse.answer && 
-                <div className="results-loader opacity-50 ml-1 mt-8 w-3/4">
-                  <Facebook animate={true} speed={2} />
-                </div>
-              }
+            {
+              searchResponse && !searchResponse.answer && 
+              <div className="results-loader opacity-50 ml-1 mt-8 w-3/4">
+                <Facebook animate={true} speed={2} />
+              </div>
+            }
             {searchResponse && searchResponse.success && searchResponse.answer &&
               <div className="answer mt-5">
                 <div className="answer-header flex flex-row items-center mb-2">
