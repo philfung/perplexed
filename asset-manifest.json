@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/perplexed/static/css/main.66d4c2ea.css",
+    "main.js": "/perplexed/static/js/main.469439bd.js",
+    "static/js/453.8ab44547.chunk.js": "/perplexed/static/js/453.8ab44547.chunk.js",
+    "static/media/fk-gr.woff2": "/perplexed/static/media/fk-gr.15c60d671b10292c73ee.woff2",
+    "static/media/fk-gr-neue.woff2": "/perplexed/static/media/fk-gr-neue.c4c014f9a3169a5731bd.woff2",
+    "static/media/b-mono.woff2": "/perplexed/static/media/b-mono.df086608ba22e469ea11.woff2",
+    "index.html": "/perplexed/index.html",
+    "main.66d4c2ea.css.map": "/perplexed/static/css/main.66d4c2ea.css.map",
+    "main.469439bd.js.map": "/perplexed/static/js/main.469439bd.js.map",
+    "453.8ab44547.chunk.js.map": "/perplexed/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.66d4c2ea.css",
+    "static/js/main.469439bd.js"
+  ]
+}
