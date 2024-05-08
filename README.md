@@ -4,6 +4,7 @@ TODO
 - [x] start page, fix long page with white
 - [x] results page, fix long page with white
 - [x] result sources, fix icons
+- [ ] dmn
 - [ ] github link
 - [ ] loader animation
 - [ ] desktop view
