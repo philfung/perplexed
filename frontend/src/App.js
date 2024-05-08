@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Constants } from './constants';
 import ReactMarkdown from 'react-markdown'
-import logo from './logo.svg';
 import './App.css';
 
 const SearchStage = {
