@@ -13,7 +13,6 @@ import re
 from typing import List, Callable
 import urllib.parse
 
-from rate_limiter import RateLimiter
 from typing import Callable, List
 
 current_dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -122,7 +121,7 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
 
     system_content = f"====SYSTEM PROMPT:{system_prompt}\n{content_docs}\n====QUESTION: {user_prompt}"
 
-    print(system_content)
+    # print(system_content)
     messages=[
         {
             "role": "system",
