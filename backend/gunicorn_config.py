@@ -1,8 +1,8 @@
 import multiprocessing
 import os
 
-#bind='localhost:5000'
-bind='localhost:80'
+bind='localhost:5000'
+#bind='localhost:80'
 
 # these settings for logfile are not working
 # set logfile in script_start_gunicorn.sh instead
