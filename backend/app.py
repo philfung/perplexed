@@ -35,6 +35,7 @@ class StreamSearchResponse:
 def stream_search():
     data = request.get_json()
     user_prompt = data.get('user_prompt')
+    print("stream_search query:", user_prompt)
     if not user_prompt:
         return jsonify({'success': False, 'message': 'Please provide a user prompt.'})
     def generate():

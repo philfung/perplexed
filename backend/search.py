@@ -15,6 +15,8 @@ import urllib.parse
 
 from typing import Callable, List
 
+from query_cache import QueryCache
+
 current_dir_path = os.path.dirname(os.path.realpath(__file__))
 CONFIG = json.load(open(current_dir_path + '/config.json'))
 DOMAINS_ALLOW = CONFIG['DOMAINS_ALLOW']
@@ -29,6 +31,8 @@ WEBSEARCH_NUM_RESULTS_SLICE = 4
 WEBSEARCH_READ_TIMEOUT_SECS = 5
 WEBSEARCH_CONNECT_TIMEOUT_SECS = 3
 WEBSEARCH_CONTENT_LIMIT_TOKENS = 1000 
+
+query_cache = QueryCache()
 
 class WebSearchDocument:
     def __init__(self, id, title, url, text=''):
@@ -60,7 +64,11 @@ def count_tokens(input_string: str) -> int:
 def query_websearch(query: str)->list[WebSearchDocument]:
     url = f"https://www.googleapis.com/customsearch/v1?key={CONFIG['GOOGLE_SEARCH_API_KEY']}&cx={CONFIG['GOOGLE_SEARCH_ENGINE_ID']}&q={query}"
     response = requests.get(url)
-    results = response.json()['items']
+    blob = response.json()
+    if not 'items' in blob:
+        print(f"Error querying Google: {blob}")
+        return []
+    results = blob['items']
     ret: list[WebSearchDocument] = []
     id = 0
     for result in results:
@@ -111,6 +119,10 @@ def replace_documents_with_markdown(text: str)->str:
     return doc_id_regex.sub(r'**\[\1\]**', text)
 
 def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
+    value = query_cache.get(user_prompt)
+    if value:
+        print("query_chatbot: cache hit for:", user_prompt)
+        return value
     content_docs = ""
     for doc in websearch_docs:
         num_tokens = count_tokens(doc.text)
@@ -142,6 +154,9 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
 
     response_message = response.choices[0].message.content
     response_message = replace_documents_with_markdown(response_message)
+
+    if user_prompt and response_message:
+        query_cache.set(user_prompt, response_message)
     return response_message
 
 class SearchAllStage(Enum):
