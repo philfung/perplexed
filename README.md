@@ -28,7 +28,7 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
    pip install -r requirements.txt
    python app.py
    ```
-   (In the future, only need to do:
+   In the future, only need to do:
    ```
    . venv/bin/activate
    python app.py
