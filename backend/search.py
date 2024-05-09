@@ -1,6 +1,7 @@
 from enum import Enum
 import bs4
 import concurrent.futures
+import datetime
 import groq
 import html
 import os
@@ -53,7 +54,8 @@ class WebSearchDocument:
         }
 
 def print_log(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    datestr = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print('[' + datestr + ']', *args, file=sys.stderr, **kwargs)
 
 def limit_tokens(input_string: str, N: int) -> str:
     tokens = input_string.split()
