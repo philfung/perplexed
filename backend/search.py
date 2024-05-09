@@ -12,8 +12,8 @@ import time
 import re
 from typing import List, Callable
 import urllib.parse
-
 from typing import Callable, List
+import sys
 
 from query_cache import QueryCache
 
@@ -51,6 +51,9 @@ class WebSearchDocument:
             'url': self.url,
             'text': self.text
         }
+
+def print_log(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 def limit_tokens(input_string: str, N: int) -> str:
     tokens = input_string.split()
@@ -121,7 +124,7 @@ def replace_documents_with_markdown(text: str)->str:
 def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
     value = query_cache.get(user_prompt)
     if value:
-        print("query_chatbot: cache hit for:", user_prompt)
+        print_log("query_chatbot: cache hit for:", user_prompt)
         return value
     content_docs = ""
     for doc in websearch_docs:

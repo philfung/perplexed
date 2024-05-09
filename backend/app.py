@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
 import html
 import json
-from search import SearchAllStage, WebSearchDocument, count_tokens, query_chatbot, query_websearch, scrape_webpage_threaded, DOMAINS_ALLOW, GROQ_LIMIT_TOKENS_PER_MINUTE, JSON_STREAM_SEPARATOR
+from search import SearchAllStage, WebSearchDocument, count_tokens, print_log, query_chatbot, query_websearch, scrape_webpage_threaded, DOMAINS_ALLOW, GROQ_LIMIT_TOKENS_PER_MINUTE, JSON_STREAM_SEPARATOR
 import time
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ class StreamSearchResponse:
 def stream_search():
     data = request.get_json()
     user_prompt = data.get('user_prompt')
-    print("stream_search query:", user_prompt)
+    print_log("stream_search query:", user_prompt)
     if not user_prompt:
         return jsonify({'success': False, 'message': 'Please provide a user prompt.'})
     def generate():
