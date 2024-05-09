@@ -51,13 +51,37 @@ function App() {
   const submitSearch = async (submittedUserPrompt) => {
     // console.log("SUBMISEARCH:" + submittedUserPrompt);
     setUserPrompt(submittedUserPrompt);
-    const res = await fetch(Constants.API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ user_prompt: submittedUserPrompt })
-    }); const reader = res.body.getReader();
+  
+    let res = null;
+    let error_message = '';
+
+    try {
+
+      res = await fetch(Constants.API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_prompt: submittedUserPrompt })
+      });
+
+    } catch (error) {
+      console.log("Error submitting search: " + error);
+      error_message = 'We\'re experiencing a high volume of requests at the moment. Please try again in a little while. We apologize for the inconvenience.';
+    }
+    if (!res || !res.ok) {
+      console.log('Stream response not ok');
+      setSearchResponse(new SearchResponse(
+        false,
+        null,
+        0,
+        [],
+        '',
+        error_message
+      ));
+      return;
+    }
+    const reader = res.body.getReader();
     const decoder = new TextDecoder('utf-8');
 
     let buffer = '';
@@ -193,11 +217,12 @@ function App() {
             </a>
           </div>
           <div className="results-container px-4">
-
-            <div className="query font-light font-fkgr mt-8 mb-3 select-none text-3xl text-pp-text-white">{userPrompt}</div>
+            {(!searchResponse || (searchResponse && searchResponse.success)) &&
+              <div className="query font-light font-fkgr mt-8 mb-3 select-none text-3xl text-pp-text-white">{userPrompt}</div>
+            }
             {
               searchResponse && !searchResponse.success &&
-              <div className="error font-light font-fkgr mt-4 text-xl text-red-500">
+              <div className="error font-light font-fkgr mt-14 text-xl text-red-500">
                 {
                   searchResponse.error_message ?
                     searchResponse.error_message
@@ -231,7 +256,7 @@ function App() {
               </div>
             }
             {
-              searchResponse && !searchResponse.answer &&
+              searchResponse && searchResponse.success && !searchResponse.answer &&
               <div className="results-loader animate-pulse opacity-50 ml-1 mt-8 w-3/4">
                 <Facebook animate={true} speed={2} />
               </div>
