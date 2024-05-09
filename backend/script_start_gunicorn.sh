@@ -1,0 +1,1 @@
+gunicorn -c gunicorn_config.py app:app >> /tmp/server.log 2>&1
