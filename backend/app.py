@@ -12,6 +12,7 @@ CORS(app, resources={r"/stream_search": {"origins": DOMAINS_ALLOW}})
 
 @app.route('/test', methods=['GET'])
 def test():
+    print_log("test ping")
     return 'HELLO'
 
 class StreamSearchResponse:
@@ -61,4 +62,4 @@ def stream_search():
 
 if __name__ == "__main__":
     # app.run(debug=False, host='0.0.0.0', port=80)
-    app.run(debug=True)
+    app.run(debug=False)
