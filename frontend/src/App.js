@@ -220,6 +220,22 @@ function App() {
             {(!searchResponse || (searchResponse && searchResponse.success)) &&
               <div className="query font-light font-fkgr mt-8 mb-3 select-none text-3xl text-pp-text-white">{userPrompt}</div>
             }
+            {!searchResponse &&
+                <div className="sources">
+
+                  <div className="sources-header animate-pulse bg-pp-bg-light-grey flex flex-row h-7 items-center opacity-90 mx-1 mb-2 rounded-md w-20">
+                    <div className="sources-header-text flex font-regular font-fkgr ml-2 text-lg text-pp-text-white "></div>
+                  </div>
+                  <div className="sources-results flex flex-row flex-wrap">
+                    {
+                      [1, 2, 3, 4].map((doc, i) => (
+                        <div className="source-result animate-pulse bg-pp-bg-light-grey flex-col h-10 m-1 opacity-90 px-2 py-3 rounded-md w-width-percent-45">
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+            }
             {
               searchResponse && !searchResponse.success &&
               <div className="error font-light font-fkgr mt-14 text-xl text-red-500">
