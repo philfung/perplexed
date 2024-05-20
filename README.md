@@ -44,6 +44,11 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
    ```
    In production, to start the server:
    ```
+   npm i -g npm@latest
+   rm -rf node_modules
+   rm -rf package-lock.json
+   npm cache clean --force
+   npm i --no-optional --omit=optional
    npm run build
    npm install -g serve
    server -s build
