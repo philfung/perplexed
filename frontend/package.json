@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://philfung.github.io/perplexed",
+  "homepage": "https://d37ozmhmvu2kcg.cloudfront.net",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
