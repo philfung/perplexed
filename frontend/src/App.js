@@ -205,10 +205,9 @@ function App() {
       {
         userPrompt &&
         <div className="results-page bg-pp-bg-dark-grey min-h-screen">
-          <div className="header border-b border-gray-800 flex flex-row h-11 items-center justify-between pl-3">
-            <div className="logo-container flex flex-row">
-              <img className="logo-white flex h-8" 
-                   onClick={() => { goHome(); }} 
+          <div className="header border-b border-gray-800 flex flex-row h-11 items-center justify-between pl-3" >
+            <div className="logo-container flex flex-row" onClick={() => { goHome(); }}>
+              <img className="logo-white flex h-8"  
                    src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
               <div className="flex font-extralight ml-1 select-none text-xl text-pp-text-white">perplexed</div>
             </div>
