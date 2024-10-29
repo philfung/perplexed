@@ -40,6 +40,7 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
 2. Update `API_URL` in `constants.js` to point to your server
 3. ```
    npm install
+   npm run build
    ```
 3. In dev, to start the server:
    ```
