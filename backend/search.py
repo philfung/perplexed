@@ -24,8 +24,8 @@ DOMAINS_ALLOW = CONFIG['DOMAINS_ALLOW']
 JSON_STREAM_SEPARATOR = "[/PERPLEXED-SEPARATOR]"
 GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
 #GROQ_MODEL = 'mixtral-8x7b-32768'
-# GROQ_MODEL = 'llama3-8b-8192'
-GROQ_MODEL = 'llama3-groq-8b-8192-tool-use-preview'
+GROQ_MODEL = 'llama3-8b-8192'
+# GROQ_MODEL = 'llama3-groq-8b-8192-tool-use-preview'
 GROQ_LIMIT_TOKENS_PER_MINUTE = 30000
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
 WEBSEARCH_RESULT_MIN_TOKENS = 50
@@ -135,7 +135,7 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
         if num_tokens < WEBSEARCH_RESULT_MIN_TOKENS:
             continue
         content_docs += f"====\nDOCUMENT ID:{doc.id}\nDOCUMENT TITLE:{doc.title}\nDOCUMENT URL:{doc.url}\nDOCUMENT TEXT:{doc.text}\n"
-    system_prompt = "You are AI assistant for answering questions.  Using the provided documents, answer the user's question as thoroughly as possible.  Answer in a list of points, omitting inconclusive documents.  Format the answer as markdown."
+    system_prompt = "You are AI assistant for answering questions.  Using the provided documents, answer the user's question as thoroughly as possible.  Omit inconclusive documents.  Make the answer eloquent and well-written, and at least 2 paragraphs long. Use numbered lists as much as possible.  Format the answer as Markdown, make sure the formatting is beautiful, that there are numbers used at the beginning of each item of a list, and two full newlines between each point in the list.  DO NOT cite the Document or Document ID in the response."
 
     system_content = f"====SYSTEM PROMPT:{system_prompt}\n{content_docs}\n====QUESTION: {user_prompt}"
 
@@ -159,7 +159,7 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument])->str:
     )
 
     response_message = response.choices[0].message.content
-    response_message = replace_documents_with_markdown(response_message)
+    # response_message = replace_documents_with_markdown(response_message)
 
     if user_prompt and response_message:
         query_cache.set(user_prompt, response_message)

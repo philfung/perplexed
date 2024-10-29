@@ -1,3 +1,24 @@
 .App {
 
 }
+
+.App .answer .answer-text p{
+    margin: 10px 0px 10px 0px;
+}
+
+.App .answer .answer-text p strong{
+    font-size: larger;
+}
+
+.App .answer .answer-text ol {
+    /* list-style-type: disc; */
+    list-style-type: decimal;
+    margin: 0px 0px 0px 10px;
+}
+.App .answer .answer-text ol li {
+    margin: 0px 0px 0px 10px;
+}
+
+.App .answer .answer-text li strong{
+    font-size: large;
+}
