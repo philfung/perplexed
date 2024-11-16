@@ -13,7 +13,7 @@ with an LLM.
 
 <img height="400" alt="Screenshot 2024-11-16 at 10 06 03 AM" src="https://github.com/user-attachments/assets/e88ff3ee-2efc-4a36-8427-fcf90141a083">
 
-The LLM can be any smaller, consumer-grade with at least 5k context window (assuming each web page ~1k tokens)
+The LLM can be any smaller, consumer-grade with at least 5k context window (assuming each web page ~1k tokens).
 
 ## Deployment Instructions
 
