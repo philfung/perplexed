@@ -1,5 +1,5 @@
-## Perplexed 
-Open-source app inspired by the amazing web search product, Perplexity.
+## <img height="25" src="https://github.com/philfung/perplexed/blob/main/frontend/public/images/logo-blue.svg"/> Perplexed
+#### Open-source app inspired by the amazing web search product, Perplexity.
 
 [**Live Demo**](https://d37ozmhmvu2kcg.cloudfront.net/)
 
@@ -17,7 +17,7 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
 
 ## Deployment Instructions
 
-### Python Server
+### A. Python Server
 1. ```
    cd backend
    copy config.json.sample config.json
@@ -35,7 +35,7 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
 
    In production, in addition, you probably want to use gunicorn ([1](https://github.com/philfung/perplexed/blob/main/backend/gunicorn_config.py), [2](https://github.com/philfung/perplexed/blob/main/backend/script_start_gunicorn.sh)) and nginx ([1](https://github.com/philfung/perplexed/blob/main/backend/nginx.conf)) in conjunction with your python server ([1](https://github.com/philfung/perplexed/blob/main/backend/script_kill_servers.sh)) (utility scripts linked).
  
-### React Frontend
+### B. React Frontend
 1. ```
    cd frontend
    ```
