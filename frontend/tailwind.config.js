@@ -31,7 +31,7 @@ module.exports = {
         '15': '15px'
       },
       spacing: {
-        'header-height': '100px',
+        'header-height': '70px',
         '1/8-screen': '12.5vh'
       },
       width: {

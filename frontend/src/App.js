@@ -157,7 +157,7 @@ function App() {
       {!userPrompt &&
 
         <div className="input-page bg-pp-bg-dark-grey flex flex-col h-screen">
-          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-4 mr-4">
+          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-8 mr-8">
             <div className="logo-container flex flex-row">
               <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
               <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">perplexed</div>
@@ -166,17 +166,17 @@ function App() {
               <img className="github flex opacity-50 w-10" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
             </a>
           </div>
-          <div className="main-center-stuff flex flex-col mx-4 mt-1/8-screen">
-            <div className="welcome-slogan flex font-extralight font-fkgr mb-8 select-none text-4xl text-pp-text-white">Ask questions, get answers</div>
-            <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col pl-4 pr-2 pt-4 pb-2 rounded-md">
-              <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-16 placeholder-pp-text-grey text-15 text-pp-text-white"
+          <div className="main-center-stuff flex flex-col mx-9 mt-8">
+            <div className="welcome-slogan flex font-light font-fkgr mb-8 select-none text-3xl text-pp-text-white">What do you want to know?</div>
+            <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col pl-4 pr-2 pt-4 pb-2 rounded-3xl">
+              <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-12 placeholder-pp-text-grey text-16 text-pp-text-white"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     console.log(e);
                     submitSearch(e.target.value);
                   }
                 }}
-                placeholder='Ask Anything...'>
+                placeholder='Ask anything...'>
               </textarea>
               <div className="search-lower-bar flex flex-row justify-end">
                 <div className="search-lower-bar-arrow bg-pp-button-grey flex flex-row w-8 h-8  rounded-full">
