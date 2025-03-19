@@ -161,7 +161,7 @@ function App() {
   }
 
   let searchExamples = [
-    { emoji: '🍋', text: 'Health benefits of lemon water' },
+    // { emoji: '🍋', text: 'Health benefits of lemon water' },
     { emoji: '🪗', text: 'Are accordians French?' },
     { emoji: '🚀', text: 'Who are the Guardians of the Galaxy?' },
     { emoji: '⚽', text: 'Who are the best soccer players of all time' },
