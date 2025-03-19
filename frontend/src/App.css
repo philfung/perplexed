@@ -2,6 +2,26 @@
 
 }
 
+/* Sidebar styles */
+.sidebar {
+  z-index: 10;
+}
+
+.sidebar-button {
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-button:hover {
+  background-color: rgba(47, 48, 47, 0.8);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}
+
 .App .answer .answer-text p{
     margin: 10px 0px 10px 0px;
 }

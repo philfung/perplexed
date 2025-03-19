@@ -33,6 +33,18 @@ class SearchResponse {
   }
 };
 
+// Sidebar component for desktop layout
+const Sidebar = () => {
+  return (
+    <div className="sidebar hidden md:flex flex-col bg-pp-bg-light-grey border-r border-pp-border-grey  w-[170px] h-screen fixed left-0 top-0">
+      <div className="logo-container flex justify-center items-center h-header-height border-b border-gray-800 py-4">
+        <img className="h-10 w-1/2" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
+        <div className="font-extralight select-none text-2xl text-pp-text-white">perplexed</div>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   const [userPrompt, setUserPrompt] = useState('');
   const [searchResponse, setSearchResponse] = useState(null);
@@ -154,10 +166,12 @@ function App() {
 
   return (
     <div className="App">
+      {/* Sidebar component */}
+      <Sidebar />
+      
       {!userPrompt &&
-
-        <div className="input-page bg-pp-bg-dark-grey flex flex-col h-screen">
-          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-8 mr-8">
+        <div className="input-page bg-pp-bg-dark-grey flex flex-col h-screen md:ml-[170px]">
+          <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-8 mr-8 md:hidden">
             <div className="logo-container flex flex-row">
               <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
               <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">perplexed</div>
@@ -166,7 +180,7 @@ function App() {
               <img className="github flex opacity-50 w-10" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
             </a>
           </div>
-          <div className="main-center-stuff flex flex-col mx-9 mt-8">
+          <div className="main-center-stuff flex flex-col mx-9 mt-8 md:mt-16">
             <div className="welcome-slogan flex font-light font-fkgr mb-8 select-none text-3xl text-pp-text-white">What do you want to know?</div>
             <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col pl-4 pr-2 pt-4 pb-2 rounded-3xl">
               <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-12 placeholder-pp-text-grey text-16 text-pp-text-white"
@@ -204,8 +218,8 @@ function App() {
       }
       {
         userPrompt &&
-        <div className="results-page bg-pp-bg-dark-grey min-h-screen">
-          <div className="header border-b border-gray-800 flex flex-row h-11 items-center justify-between pl-3" >
+        <div className="results-page bg-pp-bg-dark-grey min-h-screen md:ml-[170px]">
+          <div className="header border-b border-gray-800 flex flex-row h-11 items-center justify-between pl-3 md:hidden" >
             <div className="logo-container flex flex-row" onClick={() => { goHome(); }}>
               <img className="logo-white flex h-8"  
                    src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
@@ -215,7 +229,7 @@ function App() {
               <img className="github flex opacity-50 mr-4 w-7" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
             </a>
           </div>
-          <div className="results-container px-4">
+          <div className="results-container px-4 md:pt-8">
             {(!searchResponse || (searchResponse && searchResponse.success)) &&
               <div className="query font-light font-fkgr mt-8 mb-3 select-none text-3xl text-pp-text-white">{userPrompt}</div>
             }
@@ -290,7 +304,7 @@ function App() {
               </div>
             }
             {
-              <div className="new-search bg-pp-bg-light-grey border border-gray-600 bottom-2 fixed flex flex-row h-14 items-center left-1/2 rounded-full text-gray-500 text-lg transform -translate-x-1/2 w-11/12">
+              <div className="new-search bg-pp-bg-light-grey border border-gray-600 bottom-2 fixed flex flex-row h-14 items-center left-1/2 rounded-full text-gray-500 text-lg transform -translate-x-1/2 w-11/12 md:w-10/12 md:left-[calc(50%+70px)]">
                 <button className="ml-10" onClick={() => { resetSearch(); }}>Ask follow-up..</button>
               </div>
             }
