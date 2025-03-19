@@ -34,16 +34,6 @@ class SearchResponse {
 };
 
 // Sidebar component for desktop layout
-const Sidebar = () => {
-  return (
-    <div className="sidebar hidden md:flex flex-col bg-pp-bg-light-grey border-r border-pp-border-grey  w-[170px] h-screen fixed left-0 top-0">
-      <div className="logo-container flex justify-center items-center h-header-height border-b border-gray-800 pr-1 py-4">
-        <img className="h-8 mt-2 w-1/4" src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
-        <div className="font-extralight select-none text-2xl text-pp-text-white">perplexed</div>
-      </div>
-    </div>
-  );
-};
 
 function App() {
   const [userPrompt, setUserPrompt] = useState('');
@@ -59,6 +49,19 @@ function App() {
     window.scrollTo(0, 0);
     window.location.reload();
   }
+
+  const Sidebar = () => {
+    return (
+      <div className="sidebar hidden md:flex flex-col bg-pp-bg-light-grey border-r border-pp-border-grey  w-[170px] h-screen fixed left-0 top-0">
+        <div className="logo-container flex justify-center items-center h-header-height border-b border-gray-800 pr-1 py-4"
+             onClick={() => { goHome(); }}>
+          <img className="h-8 mt-2 w-1/4" src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
+          <div className="font-extralight select-none text-2xl text-pp-text-white">perplexed</div>
+        </div>
+      </div>
+    );
+  };
+  
 
   const submitSearch = async (submittedUserPrompt) => {
     // console.log("SUBMISEARCH:" + submittedUserPrompt);
@@ -229,7 +232,7 @@ function App() {
               <img className="github flex opacity-50 mr-4 w-7" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
             </a>
           </div>
-          <div className="results-container px-4 md:pt-8">
+          <div className="results-container px-4 md:px-16 md:pt-2">
             {(!searchResponse || (searchResponse && searchResponse.success)) &&
               <div className="query font-light font-fkgr mt-8 mb-3 select-none text-3xl text-pp-text-white">{userPrompt}</div>
             }
@@ -304,7 +307,7 @@ function App() {
               </div>
             }
             {
-              <div className="new-search bg-pp-bg-light-grey border border-gray-600 bottom-2 fixed flex flex-row h-14 items-center left-1/2 rounded-full text-gray-500 text-lg transform -translate-x-1/2 w-11/12 md:w-10/12 md:left-[calc(50%+70px)]">
+              <div className="new-search bg-pp-bg-light-grey border border-gray-600 bottom-2 fixed flex flex-row h-14 items-center left-1/2 rounded-full text-gray-500 text-lg transform -translate-x-1/2 w-11/12 md:w-8/12 md:left-[calc(50%+70px)]">
                 <button className="ml-10" onClick={() => { resetSearch(); }}>Ask follow-up..</button>
               </div>
             }
