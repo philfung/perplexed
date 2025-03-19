@@ -37,8 +37,8 @@ class SearchResponse {
 const Sidebar = () => {
   return (
     <div className="sidebar hidden md:flex flex-col bg-pp-bg-light-grey border-r border-pp-border-grey  w-[170px] h-screen fixed left-0 top-0">
-      <div className="logo-container flex justify-center items-center h-header-height border-b border-gray-800 py-4">
-        <img className="h-10 w-1/2" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
+      <div className="logo-container flex justify-center items-center h-header-height border-b border-gray-800 pr-1 py-4">
+        <img className="h-8 mt-2 w-1/4" src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
         <div className="font-extralight select-none text-2xl text-pp-text-white">perplexed</div>
       </div>
     </div>
@@ -173,15 +173,15 @@ function App() {
         <div className="input-page bg-pp-bg-dark-grey flex flex-col h-screen md:ml-[170px]">
           <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-8 mr-8 md:hidden">
             <div className="logo-container flex flex-row">
-              <img className="App-logo flex h-10" src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="logo" />
+              <img className="App-logo flex h-9 mt-1 mr-1" src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
               <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">perplexed</div>
             </div>
             <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
               <img className="github flex opacity-50 w-10" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
             </a>
           </div>
-          <div className="main-center-stuff flex flex-col mx-9 mt-8 md:mt-16">
-            <div className="welcome-slogan flex font-light font-fkgr mb-8 select-none text-3xl text-pp-text-white">What do you want to know?</div>
+          <div className="main-center-stuff flex flex-col mx-9 mt-8 md:mt-32 md:mx-20">
+            <div className="welcome-slogan flex font-light font-fkgr mb-8 md:justify-center select-none text-3xl md:text-4xl text-pp-text-white">What do you want to know?</div>
             <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col pl-4 pr-2 pt-4 pb-2 rounded-3xl">
               <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-12 placeholder-pp-text-grey text-16 text-pp-text-white"
                 onKeyDown={e => {
