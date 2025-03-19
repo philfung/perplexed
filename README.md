@@ -1,10 +1,10 @@
-## <img height="25" src="https://github.com/philfung/perplexed/blob/main/frontend/public/images/logo-blue.svg"/> Perplexed
-#### Open-source app inspired by the amazing web search product, Perplexity.
+## <img height="25" src="https://github.com/philfung/perplexed/blob/main/frontend/public/images/perplexity-color.svg"/> Perplexed
+#### An open-source app inspired by the amazing web search product, Perplexity.
 
 [**Live Demo**](https://d37ozmhmvu2kcg.cloudfront.net/)
 
-<img width="279" alt="Screenshot 2024-05-08 at 1 23 35 PM" src="https://github.com/philfung/perplexed/assets/1054593/28ac5a06-abc6-4a8d-ab60-36f3e1f1e596">
-<img width="277" alt="Screenshot 2024-05-08 at 1 24 33 PM" src="https://github.com/philfung/perplexed/assets/1054593/a932819e-6e24-45c6-9138-234e1870a558">
+<img width="600" alt="Screenshot 2025-03-19 at 1 26 54 PM" src="https://github.com/user-attachments/assets/f190473c-467c-4169-87c9-a285dc0f234f" />
+<img width="600" alt="Screenshot 2025-03-19 at 1 26 35 PM" src="https://github.com/user-attachments/assets/07b0ad71-9c53-4d7f-a1e7-b2bded2f1806" />
 
 ## Implementation
 Given a user query, the app conducts a web search,
