@@ -224,8 +224,8 @@ function App() {
         <div className="results-page bg-pp-bg-dark-grey min-h-screen md:ml-[170px]">
           <div className="header border-b border-gray-800 flex flex-row h-11 items-center justify-between pl-3 md:hidden" >
             <div className="logo-container flex flex-row" onClick={() => { goHome(); }}>
-              <img className="logo-white flex h-8"  
-                   src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt="logo" />
+              <img className="logo-white flex h-7"  
+                   src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
               <div className="flex font-extralight ml-1 select-none text-xl text-pp-text-white">perplexed</div>
             </div>
             <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
@@ -296,8 +296,8 @@ function App() {
             {searchResponse && searchResponse.success && searchResponse.answer &&
               <div className="answer mt-5">
                 <div className="answer-header flex flex-row items-center mb-2">
-                  <div className="answer-header-icon flex h-6"><img src={process.env.PUBLIC_URL + "/images/logo-white.svg"} /></div>
-                  <div className="answer-header-text flex font-regular font-fkgr ml-2 text-lg text-pp-text-white ">Answer</div>
+                  <div className="answer-header-icon flex h-6"><img src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} /></div>
+                  <div className="answer-header-text flex font-regular font-fkgr ml-1 text-lg text-pp-text-white ">Answer</div>
                 </div>
                 <div className="answer-text font-extralight font-fkgrneue pb-20 text-md text-pp-text-white">{
                   <ReactMarkdown>
