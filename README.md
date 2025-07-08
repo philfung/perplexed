@@ -1,6 +1,6 @@
 ## <img height="25" src="https://github.com/philfung/perplexed/blob/main/frontend/public/images/perplexity-color.svg"/> Perplexed
 #### An open-source app inspired by the amazing web search product, Perplexity.
-[![Last Demo](https://img.shields.io/badge/Live-Demo-green)](https://d37ozmhmvu2kcg.cloudfront.net/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://d37ozmhmvu2kcg.cloudfront.net/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Last Commit](https://img.shields.io/github/last-commit/philfung/perplexed)]()
 
