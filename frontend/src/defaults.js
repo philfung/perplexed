@@ -1,4 +1,5 @@
 export const Defaults = {
+  appDisplayName: "perplexed",
   searchExamples: [
     {
       emoji: "☕",

@@ -57,7 +57,7 @@ function App() {
         <div className="logo-container flex justify-center items-center h-header-height border-b border-gray-800 pr-1 py-4"
              onClick={() => { goHome(); }}>
           <img className="h-8 mt-2 w-1/4" src={process.env.PUBLIC_URL + "/images/logo-color.svg"} alt="logo" />
-          <div className="font-extralight select-none text-2xl text-pp-text-white">perplexed</div>
+          <div className="font-extralight select-none text-2xl text-pp-text-white">{Defaults.appDisplayName}</div>
         </div>
       </div>
     );
@@ -173,7 +173,7 @@ function App() {
           <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-8 mr-8 md:hidden">
             <div className="logo-container flex flex-row">
               <img className="App-logo flex h-9 mt-1 mr-1" src={process.env.PUBLIC_URL + "/images/logo-color.svg"} alt="logo" />
-              <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">perplexed</div>
+              <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">{Defaults.appDisplayName}</div>
             </div>
             <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
               <img className="github flex opacity-50 w-10" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
@@ -222,7 +222,7 @@ function App() {
             <div className="logo-container flex flex-row" onClick={() => { goHome(); }}>
               <img className="logo-white flex h-7"  
                    src={process.env.PUBLIC_URL + "/images/logo-color.svg"} alt="logo" />
-              <div className="flex font-extralight ml-1 select-none text-xl text-pp-text-white">perplexed</div>
+              <div className="flex font-extralight ml-1 select-none text-xl text-pp-text-white">{Defaults.appDisplayName}</div>
             </div>
             <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
               <img className="github flex opacity-50 mr-4 w-7" src={process.env.PUBLIC_URL + "/images/github_logo.png"} />
