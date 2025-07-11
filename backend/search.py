@@ -1,28 +1,19 @@
 from enum import Enum
 import bs4
-import concurrent.futures
 import datetime
 import groq
 import html
 import os
-import pprint
 import requests
-import json
 import sys
-import time
 import re
-from typing import List, Callable
 import urllib.parse
-from typing import Callable, List
-import sys
 
 from query_cache import QueryCache
+from config import Search, Secrets
 
 current_dir_path = os.path.dirname(os.path.realpath(__file__))
-CONFIG = json.load(open(current_dir_path + '/config.json'))
-DOMAINS_ALLOW = CONFIG['DOMAINS_ALLOW']
-JSON_STREAM_SEPARATOR = "[/PERPLEXED-SEPARATOR]"
-GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
+GROQ_CLIENT = groq.Groq(api_key = Secrets.GROQ_API_KEY)
 #GROQ_MODEL = 'mixtral-8x7b-32768'
 GROQ_MODEL = 'llama3-8b-8192'
 # GROQ_MODEL = 'llama3-groq-8b-8192-tool-use-preview'
@@ -32,7 +23,7 @@ WEBSEARCH_RESULT_MIN_TOKENS = 50
 WEBSEARCH_NUM_RESULTS_SLICE = 4
 WEBSEARCH_READ_TIMEOUT_SECS = 5
 WEBSEARCH_CONNECT_TIMEOUT_SECS = 3
-WEBSEARCH_CONTENT_LIMIT_TOKENS = 1000 
+WEBSEARCH_CONTENT_LIMIT_TOKENS = 1000
 
 query_cache = QueryCache()
 
@@ -42,7 +33,7 @@ class WebSearchDocument:
         self.title = html.escape(title)
         self.url = url
         self.text = html.escape(text)
-    
+
     def __str__(self) -> str:
         return f"{self.title}\n{self.url}\n{self.text[:100]}"
 
@@ -68,10 +59,10 @@ def count_tokens(input_string: str) -> int:
     return len(tokens)
 
 def query_websearch(query: str)->list[WebSearchDocument]:
-    url = f"https://www.googleapis.com/customsearch/v1?key={CONFIG['GOOGLE_SEARCH_API_KEY']}&cx={CONFIG['GOOGLE_SEARCH_ENGINE_ID']}&q={query}"
+    url = f"https://www.googleapis.com/customsearch/v1?key={Secrets.GOOGLE_SEARCH_API_KEY}&cx={Secrets.GOOGLE_SEARCH_ENGINE_ID}&q={query}"
     response = requests.get(url)
     blob = response.json()
-    if not 'items' in blob:
+    if 'items' not in blob:
         print(f"Error querying Google: {blob}")
         return []
     results = blob['items']

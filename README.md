@@ -24,42 +24,43 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
 ### A. Python Server
 1. ```
    cd backend
-   copy config.json.sample config.json
+   cp .env.example .env
    ```
-3. In [`config.json`](https://github.com/philfung/perplexed/blob/main/backend/config.json.example), fill in `GOOGLE_SEARCH_API_KEY` and `GOOGLE_SEARCH_ENGINE_ID` credentials from [Google Custom Search API](https://developers.google.com/custom-search/v1/overview).
+3. In [`backend/.env`](https://github.com/philfung/perplexed/blob/main/backend/.env), fill in `GOOGLE_SEARCH_API_KEY` and `GOOGLE_SEARCH_ENGINE_ID` credentials from [Google Custom Search API](https://developers.google.com/custom-search/v1/overview).
 4. Fill in `GROQ_API_KEY` credentials from [Groq](https://console.groq.com/docs/quickstart).
 5. Setup virtual environment, packages, and deploy the server
    ```
-   virtualenv venv
-   . venv/bin/activate
-   pip install -r requirements.txt
+   uv venv
+   . .venv/bin/activate
+   uv pip install -r requirements.txt
    python app.py
    ```
    This is fine for dev testing.
 
    In production, in addition, you probably want to use gunicorn ([1](https://github.com/philfung/perplexed/blob/main/backend/gunicorn_config.py), [2](https://github.com/philfung/perplexed/blob/main/backend/script_start_gunicorn.sh)) and nginx ([1](https://github.com/philfung/perplexed/blob/main/backend/nginx.conf)) in conjunction with your python server ([1](https://github.com/philfung/perplexed/blob/main/backend/script_kill_servers.sh)) (utility scripts linked).
+   
+   Furthermore, in production environments you should set the secrets according the platform best practices, you should expect a secrets get/set API or CLI.
  
 ### B. React Frontend
 1. ```
    cd frontend
    ```
 2. Update `API_URL` in [`constants.js`](https://github.com/philfung/perplexed/blob/main/frontend/src/constants.js) to point to your server
-3. ```
-   npm install
-   npm run build
+3. [Install Bun](https://bun.sh/docs/installation) TL;DR: `curl -fsSL https://bun.com/install | bash`, or use `npx bun` if you already have `npx`
+   ```
+   bun install
+   bun run build
    ```
 3. In dev testing, to start the server:
    ```
-   npm run start
+   bun run start
    ```
    In production, to start the server:
    ```
-   npm i -g npm@latest
    rm -rf node_modules
    rm -rf package-lock.json
-   npm cache clean --force
-   npm i --no-optional --omit=optional
-   npm run build
-   npm install -g serve
-   server -s build
+   bun cache clean --force
+   bun i --no-optional --omit=optional
+   bun run build
+   bun x serve -s build -l 30000
    ```
