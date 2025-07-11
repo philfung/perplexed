@@ -180,7 +180,7 @@ function App() {
             </a>
           </div>
           <div className="main-center-stuff flex flex-col mx-9 mt-8 md:mt-32 md:mx-20">
-            <div className="welcome-slogan flex font-light font-fkgr mb-8 md:justify-center select-none text-3xl md:text-4xl text-pp-text-white">What do you want to know?</div>
+              <div className="welcome-slogan flex font-light font-fkgr mb-8 md:justify-center select-none text-3xl md:text-4xl text-pp-text-white">{Defaults.appUserPrompt}</div>
             <div className="search-input-container bg-pp-bg-light-grey border border-pp-border-grey flex flex-col pl-4 pr-2 pt-4 pb-2 rounded-3xl">
               <textarea id="search-input" className="bg-transparent flex focus:outline-none focus:shadow-outline-none font-fkgrneue font-light h-12 placeholder-pp-text-grey text-16 text-pp-text-white"
                 onKeyDown={e => {
