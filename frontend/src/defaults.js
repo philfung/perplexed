@@ -1,7 +1,13 @@
 export const Defaults = {
   searchExamples: [
-    { emoji: "🪗", text: "Are accordians French?" },
-    { emoji: "🚀", text: "Who are the Guardians of the Galaxy?" },
+    {
+      emoji: "☕",
+      text: "Best coffee shop for taking business meetings in San Francisco.",
+    },
+    {
+      emoji: "🚀",
+      text: "What are the latest Disney Marvel movies' theater and streaming release dates?",
+    },
     { emoji: "⚽", text: "Who are the best soccer players of all time" },
   ],
 };
