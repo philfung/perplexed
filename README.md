@@ -1,4 +1,4 @@
-## <img height="25" src="https://github.com/philfung/perplexed/blob/main/frontend/public/images/perplexity-color.svg"/> Perplexed
+## <img height="25" src="https://github.com/philfung/perplexed/blob/main/frontend/public/images/logo-color.svg"/> Perplexed
 #### An open-source app inspired by the amazing web search product, Perplexity.
 [![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://d37ozmhmvu2kcg.cloudfront.net/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -19,7 +19,13 @@ with an LLM.
 
 The LLM can be any smaller, consumer-grade with at least 5k context window (assuming each web page ~1k tokens).
 
-## Deployment Instructions
+## Deployment Instructions - Easy
+
+[How to install Just](https://github.com/casey/just?tab=readme-ov-file#packages)
+
+Then `just` in the terminal to see available recipes.
+
+## Deployment Instructions - Manual
 
 ### A. Python Server
 1. ```
