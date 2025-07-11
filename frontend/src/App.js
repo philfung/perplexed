@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Constants } from './constants';
+import { Defaults } from './defaults';
 import ReactMarkdown from 'react-markdown'
 import './App.css';
 import { Facebook } from "react-content-loader"
@@ -55,7 +56,7 @@ function App() {
       <div className="sidebar hidden md:flex flex-col bg-pp-bg-light-grey border-r border-pp-border-grey  w-[170px] h-screen fixed left-0 top-0">
         <div className="logo-container flex justify-center items-center h-header-height border-b border-gray-800 pr-1 py-4"
              onClick={() => { goHome(); }}>
-          <img className="h-8 mt-2 w-1/4" src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
+          <img className="h-8 mt-2 w-1/4" src={process.env.PUBLIC_URL + "/images/logo-color.svg"} alt="logo" />
           <div className="font-extralight select-none text-2xl text-pp-text-white">perplexed</div>
         </div>
       </div>
@@ -160,12 +161,7 @@ function App() {
     return parsedUrl.protocol + "//" + parsedUrl.hostname + "/favicon.ico";
   }
 
-  let searchExamples = [
-    // { emoji: '🍋', text: 'Health benefits of lemon water' },
-    { emoji: '🪗', text: 'Are accordians French?' },
-    { emoji: '🚀', text: 'Who are the Guardians of the Galaxy?' },
-    { emoji: '⚽', text: 'Who are the best soccer players of all time' },
-  ]
+  let searchExamples = Defaults.searchExamples;
 
   return (
     <div className="App">
@@ -176,7 +172,7 @@ function App() {
         <div className="input-page bg-pp-bg-dark-grey flex flex-col h-screen md:ml-[170px]">
           <div className="header border-b border-gray-800 flex flex-row h-header-height items-center justify-between ml-8 mr-8 md:hidden">
             <div className="logo-container flex flex-row">
-              <img className="App-logo flex h-9 mt-1 mr-1" src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
+              <img className="App-logo flex h-9 mt-1 mr-1" src={process.env.PUBLIC_URL + "/images/logo-color.svg"} alt="logo" />
               <div className="header-text flex font-extralight select-none text-3xl text-pp-text-white">perplexed</div>
             </div>
             <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
@@ -225,7 +221,7 @@ function App() {
           <div className="header border-b border-gray-800 flex flex-row h-11 items-center justify-between pl-3 md:hidden" >
             <div className="logo-container flex flex-row" onClick={() => { goHome(); }}>
               <img className="logo-white flex h-7"  
-                   src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} alt="logo" />
+                   src={process.env.PUBLIC_URL + "/images/logo-color.svg"} alt="logo" />
               <div className="flex font-extralight ml-1 select-none text-xl text-pp-text-white">perplexed</div>
             </div>
             <a className="flex" href={Constants.GITHUB_LINK} target="_blank" rel="noopener noreferrer">
@@ -296,7 +292,7 @@ function App() {
             {searchResponse && searchResponse.success && searchResponse.answer &&
               <div className="answer mt-5">
                 <div className="answer-header flex flex-row items-center mb-2">
-                  <div className="answer-header-icon flex h-6"><img src={process.env.PUBLIC_URL + "/images/perplexity-color.svg"} /></div>
+                  <div className="answer-header-icon flex h-6"><img src={process.env.PUBLIC_URL + "/images/logo-color.svg"} /></div>
                   <div className="answer-header-text flex font-regular font-fkgr ml-1 text-lg text-pp-text-white ">Answer</div>
                 </div>
                 <div className="answer-text font-extralight font-fkgrneue pb-20 text-md text-pp-text-white">{
