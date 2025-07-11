@@ -1,4 +1,3 @@
-import multiprocessing
 import os
 
 bind='localhost:5000'

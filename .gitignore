@@ -1,5 +1,8 @@
 __pycache__
-venv
+.env
+.venv
 .DS_Store
+bun.lock
 config.json
 node_modules
+venv

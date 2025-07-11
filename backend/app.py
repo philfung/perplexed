@@ -2,13 +2,12 @@ from typing import List
 import concurrent.futures
 from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
-import html
 import json
-from search import SearchAllStage, WebSearchDocument, count_tokens, print_log, query_chatbot, query_websearch, scrape_webpage_threaded, DOMAINS_ALLOW, GROQ_LIMIT_TOKENS_PER_MINUTE, JSON_STREAM_SEPARATOR
-import time
+from search import SearchAllStage, WebSearchDocument, count_tokens, print_log, query_chatbot, query_websearch, scrape_webpage_threaded
+from config import Deployment, Search
 
 app = Flask(__name__)
-CORS(app, resources={r"/stream_search": {"origins": DOMAINS_ALLOW}})
+CORS(app, resources={r"/stream_search": {"origins": Deployment.DOMAINS_ALLOW}})
 
 @app.route('/test', methods=['GET'])
 def test():
@@ -30,7 +29,7 @@ class StreamSearchResponse:
                     'num_tokens_used': self.num_tokens_used,
                     'websearch_docs': [doc.to_dict() for doc in self.websearch_docs],
                     'answer': self.answer
-        }) + JSON_STREAM_SEPARATOR).encode('utf-8') 
+        }) + Search.JSON_STREAM_SEPARATOR).encode('utf-8')
 
 @app.route('/stream_search', methods=['POST'])
 def stream_search():

@@ -1,6 +1,0 @@
-{
-    "GOOGLE_SEARCH_API_KEY": "FILL IN",
-    "GOOGLE_SEARCH_ENGINE_ID": "FILL IN",
-    "GROQ_API_KEY": "FILL IN",
-    "DOMAINS_ALLOW": ["http://localhost:3000", "https://www.fillinwebsitehere.com"]
-}
