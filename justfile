@@ -18,7 +18,7 @@ backend-activate:
     @echo "Run: source backend/.venv/bin/activate"
 
 backend-install:
-    cd backend && (uv venv && . .venv/bin/activate && uv pip install -r requirements.txt)
+    cd backend && (uv venv && . .venv/bin/activate && uv pip install -r requirements.txt && python -c 'import groq')
 
 backend-dev:
     cd backend && (test -f .env && source .env && python app.py)
@@ -40,7 +40,7 @@ frontend-dev:
     cd frontend && PORT=30000 bun run start
 
 frontend-prod-clean:
-    cd frontend && rm -rf node_modules package-lock.json
+    cd frontend && rm -rf node_modules
 
 frontend-prod-build: frontend-prod-clean
     cd frontend && bun install --no-optional --omit=optional
@@ -80,10 +80,10 @@ rebuild-image: frontend-prod-build
 
 run cmd="":
     docker run \
-        --env-file <(sed s/'export '//g ./backend/.env | grep -v '^#') \
+        --env-file <(sed s/'export '//g ./backend/.env | sed 's/"//g' | grep -v '^#') \
         --env DOMAINS_ALLOW="http://localhost:30000" \
-        -p 5000:5000 \
         -p 30000:30000 \
+        -p 30001:30001 \
         -it perplexed \
         {{cmd}}
 
@@ -91,6 +91,10 @@ backend-log:
     docker exec $(docker ps --filter "ancestor=perplexed" --format '{{{{.ID}}') \
         tail -f /var/log/app/backend.log
 
-sh-image:
+live-sh:
+    docker exec -it $(docker ps --filter "ancestor=perplexed" --format '{{{{.ID}}') \
+        /bin/bash
+
+sh:
     # same as "run" but drop into shell for interactive debug
     just run /bin/bash

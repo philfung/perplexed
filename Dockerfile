@@ -1,6 +1,5 @@
 FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 
-ENV UV_PYTHON=/usr/local/bin/python
 # Enable bytecode compilation.
 ENV UV_COMPILE_BYTECODE=1
 # Copy from the cache instead of linking since it's a mounted volume.
@@ -34,11 +33,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     bun x rust-just backend-install
 
 # Copy startup scripts
-COPY docker/*.sh /app
+COPY docker/*.sh docker/*.py /app/
 
 # Expose ports if needed (adjust as necessary)
-EXPOSE 5000
 EXPOSE 30000
+EXPOSE 30001
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["/app/start_server.sh"]
