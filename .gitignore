@@ -4,5 +4,6 @@ __pycache__
 .DS_Store
 bun.lock
 config.json
+package-lock.json
 node_modules
 venv

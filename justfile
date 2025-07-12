@@ -41,12 +41,9 @@ frontend-dev:
 
 frontend-prod-clean:
     cd frontend && rm -rf node_modules package-lock.json
-    cd frontend && bun cache clean --force
 
 frontend-prod-build: frontend-prod-clean
-    cd frontend && bun i --no-optional --omit=optional
-    # upstream bug: a bun run that fails can return "success"
-    # actual successful build produces assets, we can verify index.html exists
+    cd frontend && bun install --no-optional --omit=optional
     cd frontend && bun run build && ls ./build/index.html
 
 frontend-prod-serve:
@@ -78,15 +75,22 @@ format-backend:
 build-image:
     docker build -t perplexed .
 
-rebuild-image:
-    docker build -t perplexed --no-cache .
+rebuild-image: frontend-prod-build
+    docker build -t perplexed --no-cache --progress plain .
 
-sh-image:
+run cmd="":
     docker run \
         --env-file <(sed s/'export '//g ./backend/.env | grep -v '^#') \
+        --env DOMAINS_ALLOW="http://localhost:30000" \
+        -p 5000:5000 \
         -p 30000:30000 \
         -it perplexed \
-        /bin/bash
+        {{cmd}}
 
-x:
-    cat <(echo hello)
+backend-log:
+    docker exec $(docker ps --filter "ancestor=perplexed" --format '{{{{.ID}}') \
+        tail -f /var/log/app/backend.log
+
+sh-image:
+    # same as "run" but drop into shell for interactive debug
+    just run /bin/bash

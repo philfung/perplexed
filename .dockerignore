@@ -1,8 +1,7 @@
 *.pyc
 .DS_Store
 .env*
-.ruff_cache/
+**/.ruff_cache/
 .venv/
 __pycache__/
-build/
-node_modules/
+**/node_modules
