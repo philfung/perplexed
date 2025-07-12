@@ -1,5 +1,7 @@
 #!/usr/bin/env just --justfile
 
+set shell := ["bash", "-c"]
+
 # Default recipe lists available commands
 default:
     @just --list
@@ -16,7 +18,7 @@ backend-activate:
     @echo "Run: source backend/.venv/bin/activate"
 
 backend-install:
-    cd backend && uv pip install -r requirements.txt
+    cd backend && (uv venv && . .venv/bin/activate && uv pip install -r requirements.txt)
 
 backend-dev:
     cd backend && (test -f .env && source .env && python app.py)
@@ -43,7 +45,9 @@ frontend-prod-clean:
 
 frontend-prod-build: frontend-prod-clean
     cd frontend && bun i --no-optional --omit=optional
-    cd frontend && bun run build
+    # upstream bug: a bun run that fails can return "success"
+    # actual successful build produces assets, we can verify index.html exists
+    cd frontend && bun run build && ls ./build/index.html
 
 frontend-prod-serve:
     cd frontend && bunx serve -s build -l 30000
@@ -68,3 +72,21 @@ lint-backend:
 
 format-backend:
     cd backend && uvx ruff format .
+
+
+# Docker packaging
+build-image:
+    docker build -t perplexed .
+
+rebuild-image:
+    docker build -t perplexed --no-cache .
+
+sh-image:
+    docker run \
+        --env-file <(sed s/'export '//g ./backend/.env | grep -v '^#') \
+        -p 30000:30000 \
+        -it perplexed \
+        /bin/bash
+
+x:
+    cat <(echo hello)
