@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.3.1",
+    "caniuse-lite": "^1.0.30001727",
     "react-content-loader": "^7.0.0",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
