@@ -18,9 +18,6 @@ backend_log_file=$log_dir/backend.log
 gunicorn \
     --bind 0.0.0.0:30001 \
     --daemon \
-    --env GOOGLE_SEARCH_API_KEY=$GOOGLE_SEARCH_API_KEY \
-    --env GOOGLE_SEARCH_ENGINE_ID=$GOOGLE_SEARCH_ENGINE_ID \
-    --env GROQ_API_KEY=$GROQ_API_KEY \
     --workers 4 \
     --max-requests 1000 \
     --max-requests-jitter 50 \
