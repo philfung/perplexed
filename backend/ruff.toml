@@ -1,0 +1,10 @@
+exclude = ["migrations"]
+line-length = 120
+target-version = "py313"
+
+[format]
+quote-style = "preserve"
+
+[lint]
+ignore= ["Q"]
+select = ["E", "F", "W"]
