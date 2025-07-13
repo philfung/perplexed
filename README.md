@@ -19,15 +19,27 @@ with an LLM.
 
 The LLM can be any smaller, consumer-grade with at least 5k context window (assuming each web page ~1k tokens).
 
-## Deployment Instructions - Easy
+## Development
 
-[How to install Just](https://github.com/casey/just?tab=readme-ov-file#packages)
+To take advantage of the recommended build steps, our recommended tools are:
 
-Then `just` in the terminal to see available recipes.
+- [any container runtime](https://www.google.com/search?rls=en&q=docker+and+docker+alternatives&ie=UTF-8&oe=UTF-8)
+- [`just`](https://github.com/casey/just?tab=readme-ov-file#packages)
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
+  - [`uv tool install pre-commit`](https://pre-commit.com/#install)
+  - [`uv tool install ruff`](https://docs.astral.sh/ruff/installation/)
+
+### Workflow
+
+- run `just` in the terminal to see available recipes.
+- if running directly on host, build the frontend/backend to test changes without container build step
+- if using container, `just build-image run` to take your app into the container and launch the servers
+  - iterate and repeat
+- `git add -u` your modified files and run `pre-commit` to perform `ruff` lint/format checks
 
 ## Deployment Instructions - with Docker
 
-With these `just` recipes, you do not need to manage `uv` or `bun` on your host system, just have a [container runtime available](https://www.google.com/search?rls=en&q=docker+and+docker+alternatives&ie=UTF-8&oe=UTF-8)
+With these `just` recipes, you do not need to manage `uv` or `bun` on your host system.
 
 - `just build-image` for iterative cache-enabled builds
 - `just rebuild-image` for cache-less clean builds
@@ -55,7 +67,8 @@ With these `just` recipes, you do not need to manage `uv` or `bun` on your host 
    ```
    This is fine for dev testing.
 
-   In production, in addition, you probably want to use gunicorn ([1](https://github.com/philfung/perplexed/blob/main/backend/gunicorn_config.py), [2](https://github.com/philfung/perplexed/blob/main/backend/script_start_gunicorn.sh)) and nginx ([1](https://github.com/philfung/perplexed/blob/main/backend/nginx.conf)) in conjunction with your python server ([1](https://github.com/philfung/perplexed/blob/main/backend/script_kill_servers.sh)) (utility scripts linked).
+   For production, check `docker/` for basic production process management scripts.
+   You may choose to do add-on engineering with `supervisord`, `nginx` or a variety of modifications.
    
    Furthermore, in production environments you should set the secrets according the platform best practices, you should expect a secrets get/set API or CLI.
  
