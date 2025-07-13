@@ -145,7 +145,7 @@ def query_chatbot(user_prompt, websearch_docs: list[WebSearchDocument]) -> str:
             f"DOCUMENT TEXT:{doc.text}\n"
         )
 
-    system_content = f"====SYSTEM PROMPT:{Model.SystemPrompt}\n{content_docs}\n====QUESTION: {user_prompt}"
+    system_content = f"====SYSTEM PROMPT:{Model.SYSTEM_PROMPT}\n{content_docs}\n====QUESTION: {user_prompt}"
 
     # print(system_content)
     messages = [

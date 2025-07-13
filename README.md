@@ -21,7 +21,7 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
 
 ## Development
 
-To take advantage of the recommended build steps, our recommended tools are:
+To take advantage of the configured build steps, our recommended tools are:
 
 - [any container runtime](https://www.google.com/search?rls=en&q=docker+and+docker+alternatives&ie=UTF-8&oe=UTF-8)
 - [`just`](https://github.com/casey/just?tab=readme-ov-file#packages)
