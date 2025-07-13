@@ -25,7 +25,19 @@ The LLM can be any smaller, consumer-grade with at least 5k context window (assu
 
 Then `just` in the terminal to see available recipes.
 
-## Deployment Instructions - Manual
+## Deployment Instructions - with Docker
+
+With these `just` recipes, you do not need to manage `uv` or `bun` on your host system, just have a [container runtime available](https://www.google.com/search?rls=en&q=docker+and+docker+alternatives&ie=UTF-8&oe=UTF-8)
+
+- `just build-image` for iterative cache-enabled builds
+- `just rebuild-image` for cache-less clean builds
+- `just sh` - starts the Docker container, does not start app, just `bash`
+- `just run` - starts the app, access at http://localhost:30000
+  - this expects `backend/.env` to be filled out
+  - env vars from the `.env` will be parsed/cleaned and passed to `docker run --env-file`
+- `just live-sh` - drops into shell of live running container for debugging
+
+## Deployment Instructions - Manual, without Docker
 
 ### A. Python Server
 1. ```

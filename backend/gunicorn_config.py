@@ -1,6 +1,6 @@
 import os
 
-bind='localhost:5000'
+bind='localhost:30001'
 #bind='localhost:80'
 
 # these settings for logfile are not working

@@ -1,0 +1,7 @@
+*.pyc
+.DS_Store
+.env*
+**/.ruff_cache/
+.venv/
+__pycache__/
+**/node_modules

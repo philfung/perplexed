@@ -1,5 +1,7 @@
 #!/usr/bin/env just --justfile
 
+set shell := ["bash", "-c"]
+
 # Default recipe lists available commands
 default:
     @just --list
@@ -16,7 +18,7 @@ backend-activate:
     @echo "Run: source backend/.venv/bin/activate"
 
 backend-install:
-    cd backend && uv pip install -r requirements.txt
+    cd backend && (uv venv && . .venv/bin/activate && uv pip install -r requirements.txt && python -c 'import groq')
 
 backend-dev:
     cd backend && (test -f .env && source .env && python app.py)
@@ -38,12 +40,11 @@ frontend-dev:
     cd frontend && PORT=30000 bun run start
 
 frontend-prod-clean:
-    cd frontend && rm -rf node_modules package-lock.json
-    cd frontend && bun cache clean --force
+    cd frontend && rm -rf node_modules
 
 frontend-prod-build: frontend-prod-clean
-    cd frontend && bun i --no-optional --omit=optional
-    cd frontend && bun run build
+    cd frontend && bun install --no-optional --omit=optional
+    cd frontend && bun run build && ls ./build/index.html
 
 frontend-prod-serve:
     cd frontend && bunx serve -s build -l 30000
@@ -68,3 +69,32 @@ lint-backend:
 
 format-backend:
     cd backend && uvx ruff format .
+
+
+# Docker packaging
+build-image:
+    docker build -t perplexed .
+
+rebuild-image: frontend-prod-build
+    docker build -t perplexed --no-cache --progress plain .
+
+run cmd="":
+    docker run \
+        --env-file <(sed s/'export '//g ./backend/.env | sed 's/"//g' | grep -v '^#') \
+        --env DOMAINS_ALLOW="http://localhost:30000" \
+        -p 30000:30000 \
+        -p 30001:30001 \
+        -it perplexed \
+        {{cmd}}
+
+backend-log:
+    docker exec $(docker ps --filter "ancestor=perplexed" --format '{{{{.ID}}') \
+        tail -f /var/log/app/backend.log
+
+live-sh:
+    docker exec -it $(docker ps --filter "ancestor=perplexed" --format '{{{{.ID}}') \
+        /bin/bash
+
+sh:
+    # same as "run" but drop into shell for interactive debug
+    just run /bin/bash
