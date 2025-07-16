@@ -31,6 +31,7 @@ WORKDIR /app
 COPY $FRONTEND_BUILD_DIR /app/frontend
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 RUN ls -ld /app/frontend/* && \
+    test -f /app/frontend/index.html && \
     cat /etc/nginx/nginx.conf
 
 COPY backend backend

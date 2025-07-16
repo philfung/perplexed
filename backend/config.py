@@ -8,7 +8,8 @@ class Secrets:
 
 
 class Deployment:
-    DOMAINS_ALLOW = os.environ.get("DOMAINS_ALLOW", "http://localhost:30000").split(",")
+    DOMAINS_ALLOW = os.environ.get("DOMAINS_ALLOW", "http://localhost:30000")
+    FASTAPI_APP_PORT = os.environ.get("FASTAPI_APP_PORT", 30001)
 
 
 class Model:

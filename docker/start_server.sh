@@ -20,13 +20,14 @@ gunicorn \
     --bind 0.0.0.0:30001 \
     --daemon \
     --workers 4 \
+    --worker-class uvicorn.workers.UvicornWorker \
     --max-requests 1000 \
     --max-requests-jitter 50 \
     --pid /tmp/gunicorn.pid \
     --log-file $backend_log_file \
-    app:app
+    fastapi_app:app
 
-echo "Follow backgrounded Gunicorn Python backend app log at $backend_log_file"
+echo "Follow backgrounded Gunicorn + UvicornWorker Python backend app log at $backend_log_file"
 
 # nginx logs are at /var/log/nginx/{access,error}.log
 nginx -g "daemon off;"

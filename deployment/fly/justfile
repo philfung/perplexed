@@ -4,7 +4,12 @@ set shell := ["bash", "-c"]
 
 set working-directory := "../../"
 
+# Default recipe lists available commands
+default:
+    @just --justfile ./deployment/fly/justfile --list
+
 # Quick start helpers for deploying to Fly.io
+# Further advanced usage of platform features are out of scope for this repo
 
 fly-doctor:
     flyctl doctor
@@ -16,6 +21,9 @@ fly-secrets-import:
 fly-deploy-local:
     # build the image on your local docker runtime vs. building remotely
     # good for early prototypes and local debugging
+    # TO FIX: we have to build locally for now (works on Mac host) because
+    #         bun has some build errors in the Linux container
     pwd
     ls Dockerfile
-    flyctl deploy --local-only --no-cache $(PWD) --config deployment/fly/fly.toml
+    flyctl deploy --local-only --no-cache $(PWD) --config deployment/fly/fly.toml && \
+    flyctl status --config deployment/fly/fly.toml

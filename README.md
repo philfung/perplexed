@@ -33,9 +33,14 @@ To take advantage of the configured build steps, our recommended tools are:
 
 - run `just` in the terminal to see available recipes. We support recipes to launch the app in dev, staging and production modes.
   - dev: run app as two processes on localhost
+    - both processes can be exited with `Ctrl-C` in the terminal
   - staging: run app inside a docker container as a single http service, fronted by `nginx`
+    - the single http service `docker run`s in the foreground, `Ctrl-C` to stop container
   - production: a variant of staging with diff env vars
-- e.g. if testing in staging, fill out `frontend/.env.staging` then `just build-image-staging && just run` to take your app into the container and launch the server on `http://localhost:30000`
+    - the single http service will respond to platform-specific terminate/kill signals
+    - generally the platforms will rotate in a new container instance when you deploy a new version and directing traffic there when the container is ready/healthy.
+- required: pre-fill `.env.*` files prior to starting app instances
+  - e.g. if testing in staging, fill out `frontend/.env.staging` then `just build-image-staging && just run` to take your app into the container and launch the server on `http://localhost:30000`
 
 ## Deployment Instructions - Manual, without our justfile recipes
 

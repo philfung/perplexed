@@ -25,7 +25,10 @@ backend-install:
     python -c 'import groq'
 
 backend-dev:
-    cd backend && (test -f .env && source .env && . .venv/bin/activate && python app.py)
+    cd backend && \
+    test -f .env && source .env \
+    && . .venv/bin/activate \
+    && python fastapi_app.py
 
 # Frontend recipes
 frontend-install:
@@ -47,11 +50,13 @@ frontend-build-staging:
     cd frontend && \
     bun install --no-optional --omit=optional && \
     bun run build:staging
+    test -f ./frontend/build-staging/index.html
 
 frontend-build-prod:
     cd frontend && \
     bun install --no-optional --omit=optional && \
     bun run build:prod
+    test -f ./frontend/build-prod/index.html
 
 frontend-build-all: frontend-build-dev frontend-build-staging frontend-build-prod
     ls -l frontend/build*/index.html
@@ -86,6 +91,7 @@ format-backend:
 # Docker packaging
 
 build-image-staging extra_flags="":
+    test -d ./frontend/build-staging
     docker build -t perplexed-staging \
         --build-arg FRONTEND_BUILD_DIR=./frontend/build-staging \
         --progress plain {{extra_flags}} .
@@ -99,6 +105,18 @@ rebuild-image:
     docker build -t perplexed --no-cache --progress plain .
 
 run cmd="":
+    @if [ ! -d ./frontend/build-staging ]; then \
+        just frontend-build-staging; \
+    fi
+    @if ! docker image inspect perplexed-staging; then \
+        just build-image-staging; \
+    fi
+    @if [ ! -f ./backend/.env ]; then \
+        cp ./backend/.env.example ./backend/.env; \
+        echo "Required: must first fill out the secrets in ./backend/.env" >&2; \
+        cat ./backend/.env >&2; \
+        exit 1; \
+    fi
     docker run \
         --env-file <(sed s/'export '//g ./backend/.env | sed 's/"//g' | grep -v '^#') \
         --env DOMAINS_ALLOW="http://localhost:30000" \
