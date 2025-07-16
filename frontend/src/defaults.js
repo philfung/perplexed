@@ -1,7 +1,8 @@
 // Domain-specific apps should replace this file with their parameters.
 export const Defaults = {
-  appDisplayName: "perplexed",
-  appUserPrompt: "What do you what to know?",
+  appDisplayName: process.env.REACT_APP_DISPLAY_NAME || "perplexed",
+  appUserPrompt:
+    process.env.REACT_APP_USER_PROMPT || "What do you what to know?",
   searchExamples: [
     {
       emoji: "☕",

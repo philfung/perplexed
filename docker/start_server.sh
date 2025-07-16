@@ -1,12 +1,13 @@
 #!/bin/bash -e
 
 # must have all of these env vars
-test -n "$GOOGLE_SEARCH_API_KEY"
-test -n "$GOOGLE_SEARCH_ENGINE_ID"
-test -n "$GROQ_API_KEY"
+test -n "$GOOGLE_SEARCH_API_KEY" && echo "✅ GOOGLE_SEARCH_API_KEY" || echo "❓ GOOGLE_SEARCH_API_KEY"
+test -n "$GOOGLE_SEARCH_ENGINE_ID" && echo "✅ GOOGLE_SEARCH_ENGINE_ID" || echo "❓ GOOGLE_SEARCH_ENGINE_ID"
+test -n "$GROQ_API_KEY" && echo "✅ GROQ_API_KEY" || echo "❓ GROQ_API_KEY"
+echo "✅ DOMAINS_ALLOW=$DOMAINS_ALLOW"
+
 
 cd /app/backend
-source .venv/bin/activate
 
 # this sanity checks env vars, docker run --env, etc
 /app/groq_test.py
@@ -24,13 +25,8 @@ gunicorn \
     --pid /tmp/gunicorn.pid \
     --log-file $backend_log_file \
     app:app
-echo "Follow backgrounded Gunicorn Python backend app log at $log_file"
 
-cd /app/frontend
-frontend_log_file=$log_dir/frontend.log
-echo "Starting frontend static site in the foreground. Logging to $frontend_log_file"
-/usr/local/bin/bun x serve \
-    --debug \
-    --listen 30000 \
-    --no-port-switching \
-    /app/frontend | tee $frontend_log_file
+echo "Follow backgrounded Gunicorn Python backend app log at $backend_log_file"
+
+# nginx logs are at /var/log/nginx/{access,error}.log
+nginx -g "daemon off;"

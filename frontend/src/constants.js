@@ -1,6 +1,6 @@
 export const Constants = {
-  API_URL: "http://127.0.0.1:30001/stream_search",
-  // API_URL: 'https://d21l5c617zttgr.cloudfront.net/stream_search',
-  GITHUB_LINK: "https://github.com/philfung/perplexed",
+  REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+  GITHUB_LINK:
+    process.env.GITHUB_LINK || "https://github.com/philfung/perplexed",
   JSON_STREAM_SEPARATOR: "[/PERPLEXED-SEPARATOR]",
 };

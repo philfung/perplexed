@@ -18,36 +18,48 @@ backend-activate:
     @echo "Run: source backend/.venv/bin/activate"
 
 backend-install:
-    cd backend && (uv venv && . .venv/bin/activate && uv pip install -r requirements.txt && python -c 'import groq')
+    cd backend && \
+    uv venv && \
+    . .venv/bin/activate && \
+    uv pip install -r requirements.txt && \
+    python -c 'import groq'
 
 backend-dev:
-    cd backend && (test -f .env && source .env && python app.py)
-
-backend-prod:
-    cd backend && ./script_start_gunicorn.sh
-
-backend-kill:
-    cd backend && ./script_kill_servers.sh
+    cd backend && (test -f .env && source .env && . .venv/bin/activate && python app.py)
 
 # Frontend recipes
 frontend-install:
     cd frontend && bun install
 
-frontend-build:
-    cd frontend && bun run build
-
-frontend-dev:
-    cd frontend && PORT=30000 bun run start
-
-frontend-prod-clean:
+frontend-clean:
     cd frontend && rm -rf node_modules
 
-frontend-prod-build: frontend-prod-clean
-    cd frontend && bun install --no-optional --omit=optional
-    cd frontend && bun run build && ls ./build/index.html
+frontend-build-dev:
+    cd frontend && \
+    bun run build:dev
 
-frontend-prod-serve:
-    cd frontend && bunx serve -s build -l 30000
+frontend-dev:
+    cd frontend && \
+    PORT=30000 bun start ./build-dev
+
+
+frontend-build-staging:
+    cd frontend && \
+    bun install --no-optional --omit=optional && \
+    bun run build:staging
+
+frontend-build-prod:
+    cd frontend && \
+    bun install --no-optional --omit=optional && \
+    bun run build:prod
+
+frontend-build-all: frontend-build-dev frontend-build-staging frontend-build-prod
+    ls -l frontend/build*/index.html
+    # check that each env injects its variant of REACT_APP_API_URL value
+    grep -oE '.{0,50}/stream_search' frontend/build*/static/js/*.js
+    grep -oE '.{0,50}/github.com{0,50}' frontend/build*/static/js/*.js
+    grep
+
 
 # Combined recipes
 setup: backend-setup frontend-install
@@ -72,10 +84,18 @@ format-backend:
 
 
 # Docker packaging
-build-image:
-    docker build -t perplexed .
 
-rebuild-image: frontend-prod-build
+build-image-staging extra_flags="":
+    docker build -t perplexed-staging \
+        --build-arg FRONTEND_BUILD_DIR=./frontend/build-staging \
+        --progress plain {{extra_flags}} .
+
+build-image-prod extra_flags="":
+    docker build -t perplexed \
+        --build-arg FRONTEND_BUILD_DIR=./frontend/build-prod \
+        --progress plain {{extra_flags}} .
+
+rebuild-image:
     docker build -t perplexed --no-cache --progress plain .
 
 run cmd="":
@@ -83,8 +103,7 @@ run cmd="":
         --env-file <(sed s/'export '//g ./backend/.env | sed 's/"//g' | grep -v '^#') \
         --env DOMAINS_ALLOW="http://localhost:30000" \
         -p 30000:30000 \
-        -p 30001:30001 \
-        -it perplexed \
+        -it perplexed-staging \
         {{cmd}}
 
 backend-log:

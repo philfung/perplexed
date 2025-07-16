@@ -7,3 +7,5 @@ config.json
 package-lock.json
 node_modules
 venv
+.env.production
+build*/

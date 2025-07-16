@@ -1,0 +1,21 @@
+#!/usr/bin/env just --justfile
+
+set shell := ["bash", "-c"]
+
+set working-directory := "../../"
+
+# Quick start helpers for deploying to Fly.io
+
+fly-doctor:
+    flyctl doctor
+
+fly-secrets-import:
+    # format your local .env into a format that 'flyctl secrets import' will accept
+    sed s/'export '//g ./backend/.env | grep -v '^#' | flyctl secrets import
+
+fly-deploy-local:
+    # build the image on your local docker runtime vs. building remotely
+    # good for early prototypes and local debugging
+    pwd
+    ls Dockerfile
+    flyctl deploy --local-only --no-cache $(PWD) --config deployment/fly/fly.toml

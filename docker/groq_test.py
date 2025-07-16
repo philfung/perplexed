@@ -1,4 +1,4 @@
-#!/app/backend/.venv/bin/python
+#!/usr/local/bin/python
 
 import os
 
