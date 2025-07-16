@@ -10,7 +10,6 @@ primary_region = 'sjc'
 
 [env]
 DOMAINS_ALLOW = "http://localhost:30000,https://perplexed-purple.fly.dev"
-REACT_APP_DISPLAY_NAME = "perplexed on fly"
 
 [http_service]
   internal_port = 30000
