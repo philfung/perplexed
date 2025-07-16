@@ -29,27 +29,17 @@ To take advantage of the configured build steps, our recommended tools are:
   - [`uv tool install pre-commit`](https://pre-commit.com/#install)
   - [`uv tool install ruff`](https://docs.astral.sh/ruff/installation/)
 
-### Workflow
+### Workflow and Local Deployment
 
-- run `just` in the terminal to see available recipes.
-- if running directly on host, build the frontend/backend to test changes without container build step
-- if using container, `just build-image run` to take your app into the container and launch the servers
-  - iterate and repeat
-- `git add -u` your modified files and run `pre-commit` to perform `ruff` lint/format checks
+- run `just` in the terminal to see available recipes. We support recipes to launch the app in dev, staging and production modes.
+  - dev: run app as two processes on localhost
+  - staging: run app inside a docker container as a single http service, fronted by `nginx`
+  - production: a variant of staging with diff env vars
+- e.g. if testing in staging, fill out `frontend/.env.staging` then `just build-image-staging && just run` to take your app into the container and launch the server on `http://localhost:30000`
 
-## Deployment Instructions - with Docker
+## Deployment Instructions - Manual, without our justfile recipes
 
-With these `just` recipes, you do not need to manage `uv` or `bun` on your host system.
-
-- `just build-image` for iterative cache-enabled builds
-- `just rebuild-image` for cache-less clean builds
-- `just sh` - starts the Docker container, does not start app, just `bash`
-- `just run` - starts the app, access at http://localhost:30000
-  - this expects `backend/.env` to be filled out
-  - env vars from the `.env` will be parsed/cleaned and passed to `docker run --env-file`
-- `just live-sh` - drops into shell of live running container for debugging
-
-## Deployment Instructions - Manual, without Docker
+Refer to the justfile for step by step recipes. The following describes the requirements if you choose to re-implement in a different environment.
 
 ### A. Python Server
 1. ```
@@ -66,32 +56,50 @@ With these `just` recipes, you do not need to manage `uv` or `bun` on your host 
    python app.py
    ```
    This is fine for dev testing.
+6. Wherever you run this backend, you need to define env var `DOMAINS_ALLOW` to match the frontend domain the browser sees.
 
-   For production, check `docker/` for basic production process management scripts.
+   For production, check `docker/` for example containerized/cloud process management scripts.
+
    You may choose to do add-on engineering with `supervisord`, `nginx` or a variety of modifications.
    
-   Furthermore, in production environments you should set the secrets according the platform best practices, you should expect a secrets get/set API or CLI.
+   Furthermore, in production environments you should set the secrets according the platform best practices, you should expect a secrets get/set API or CLI, e.g. in our Fly.io example you would use `fly secrets set|unset` prior to deploying your app.
  
 ### B. React Frontend
+
+The React app can be compiled into a static site you can serve with `nginx`, `npx serve` or your choice of framework.
+
 1. ```
    cd frontend
    ```
-2. Update `API_URL` in [`constants.js`](https://github.com/philfung/perplexed/blob/main/frontend/src/constants.js) to point to your server
+2. Update `REACT_APP_API_URL` in [`constants.js`](https://github.com/philfung/perplexed/blob/main/frontend/src/constants.js) to point to your server
 3. [Install Bun](https://bun.sh/docs/installation) TL;DR: `curl -fsSL https://bun.com/install | bash`, or use `npx bun` if you already have `npx`
    ```
    bun install
-   bun run build
+   bun run build:dev
+   bun run build:staging
+   bun run build:prod
    ```
+   
+   There are justfile recipes for all of the above.
 3. In dev testing, to start the server:
    ```
-   bun run start
+   just frontend-dev
+   PORT=30000 bun start ./build-[dev|staging|prod]
    ```
-   In production, to start the server:
+4. In staging the docker app on your host, to start the server:
+   
+   Fill in values in `frontend/.env.staging`.
+   Refer to the justfile recipes for implementation details.
+   
    ```
-   rm -rf node_modules
-   rm -rf package-lock.json
-   bun cache clean --force
-   bun i --no-optional --omit=optional
-   bun run build
-   bun x serve -s build -l 30000
+   just run
    ```
+
+# Contributors
+
+- `git add -u` your modified files and run `pre-commit` to perform `ruff` lint/format checks
+
+# TODOS
+
+- [ ] Clarify the pre-existing Cloudfront deployment strategy for the frontend
+- [ ] Create `./deployment/cloudflare` example for [Cloudflare Containers](https://developers.cloudflare.com/containers/)

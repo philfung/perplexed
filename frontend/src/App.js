@@ -72,8 +72,7 @@ function App() {
     let error_message = '';
 
     try {
-
-      res = await fetch(Constants.API_URL, {
+      res = await fetch(Constants.REACT_APP_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
