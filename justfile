@@ -25,7 +25,10 @@ backend-install:
     python -c 'import groq'
 
 backend-dev:
-    cd backend && (test -f .env && source .env && . .venv/bin/activate && python app.py)
+    cd backend && \
+    test -f .env && source .env \
+    && . .venv/bin/activate \
+    && python fastapi_app.py
 
 # Frontend recipes
 frontend-install:

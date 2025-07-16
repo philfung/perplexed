@@ -1,11 +1,15 @@
 #!/usr/local/bin/python
 
 import os
+import httpx
 
 from groq import Groq
 
+# Workaround for groq/httpx compatibility issue
+http_client = httpx.Client()
 client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
+    http_client=http_client,
 )
 
 chat_completion = client.chat.completions.create(
@@ -16,7 +20,7 @@ chat_completion = client.chat.completions.create(
         }
     ],
     model="llama3-8b-8192",  # quick model
-    max_completion_tokens=10,
+    max_tokens=10,
     temperature=0,
 )
 
