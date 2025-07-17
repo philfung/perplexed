@@ -58,6 +58,12 @@ frontend-build-prod:
     bun run build:prod
     test -f ./frontend/build-prod/index.html
 
+frontend-build-cloudflare:
+    cd frontend && \
+    bun install --no-optional --omit=optional && \
+    bun run build:cloudflare
+    test -f ./frontend/build-cloudflare/index.html
+
 frontend-build-all: frontend-build-dev frontend-build-staging frontend-build-prod
     ls -l frontend/build*/index.html
     # check that each env injects its variant of REACT_APP_API_URL value

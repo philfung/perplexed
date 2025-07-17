@@ -1,0 +1,40 @@
+#!/usr/bin/env just --justfile
+
+set shell := ["bash", "-c"]
+
+# Default recipe lists available commands
+default:
+    @just --list
+
+
+# Cloudflare deployment commands - basics
+
+# Check if wrangler is installed and authenticated
+cf-doctor:
+    @echo "Checking Cloudflare setup..."
+    @which wrangler || (echo "Error: wrangler not found. Install with: bun install -g wrangler" && exit 1)
+    @wrangler whoami || (echo "Error: Not authenticated. Run: wrangler login" && exit 1)
+    @echo "✓ Wrangler is installed and authenticated"
+
+# Guide user through putting secrets from .env file to remote secrets store
+cf-setup-secrets env_file="../../backend/.env":
+    @echo "Importing secrets to Cloudflare from {{ env_file }}..."
+    @test -f {{ env_file }} || (echo "Please provide the backend/.env file at root of the repo." && exit 1)
+    @echo "Reading from {{ env_file }}, review the suggested commands and run them yourself, if any are applicable as secrets:"; \
+    sed s/'export '//g ../../backend/.env | grep -v '^#' | grep -v '^$' | \
+    while IFS='=' read -r key value; do \
+        echo "  wrangler secret put ${key} ${value}"; \
+    done
+    wrangler secrets-store store create perplexed-cf-store --remote
+    wrangler secret put GOOGLE_SEARCH_API_KEY
+
+# Build frontend for Cloudflare deployment
+cf-build-frontend:
+    @echo "Building frontend for Cloudflare deployment..."
+    cd ../.. && just frontend-build-cloudflare
+
+
+# Deploy to Cloudflare (using remote build)
+cf-deploy:
+    @echo "Deploying to Cloudflare..."
+    wrangler deploy --env production
