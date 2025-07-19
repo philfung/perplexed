@@ -31,25 +31,19 @@ cf-clean-dist:
     @mkdir -p ./dist
     @rm -rf ./dist/frontend-target
 
-# NOTE: *confusing terminology*
-#   "wrangler dev" uses "--env production" namespace as defined in wrangler.toml
-#   the "cloudflare-dev" mode here means we are developing on our host
+
+# WARNING: *confusing terminology*
+#   "wrangler dev" uses "--env production" config namespace as defined in wrangler.toml
 #   the "--env produciton" means we are using env-isolated confs in Cloudflare remote called literal 'production'
+#   the "cloudflare local" mode here means we are running a Cloudflare Worker env on our host
 cf-local: cf-clean-dist
     @echo "Building frontend for Cloudflare local..."
     cd ../../ && \
     just frontend-build-cloudflare-local
     mv ./dist/frontend-local ./dist/frontend-target
-    @echo "Deploying to Cloudflare local dev mode..."
+    @echo "Deploying to Cloudflare local dev mode - access at http://localhost:30001/"
     wrangler dev --env production --port 30001
 
-cf-dev-exec cmd="/bin/bash":
-    docker exec -it $(docker ps --format json | \
-        jq -r 'select(.Image | contains("cloudflare-dev/perplexed")) | .ID') \
-        {{ cmd }}
-
-cf-dev-tail:
-    just cf-dev-exec 'tail -f /var/log/app/backend.log'
 
 # Deploy to Cloudflare (using remote build)
 cf-deploy: cf-clean-dist
