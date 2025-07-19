@@ -1,0 +1,61 @@
+#!/usr/bin/env just --justfile
+
+set shell := ["bash", "-c"]
+
+# Default recipe lists available commands
+default:
+    @just --list
+
+
+# Cloudflare deployment commands - basics
+
+# Check if wrangler is installed and authenticated
+cf-doctor:
+    @echo "Checking Cloudflare setup..."
+    @which wrangler || (echo "Error: wrangler not found. Install with: bun install -g wrangler" && exit 1)
+    @wrangler whoami || (echo "Error: Not authenticated. Run: wrangler login" && exit 1)
+    @echo "✓ Wrangler is installed and authenticated"
+
+# Guide user through putting secrets from .env file to remote secrets store
+cf-setup-secrets env_file="../../backend/.env":
+    @echo "Run these commands manually to paste in the relevant secrets for the Python backend:"
+    @echo "  wrangler secret put --env production GOOGLE_SEARCH_API_KEY"
+    @echo "  wrangler secret put --env production GOOGLE_SEARCH_ENGINE_ID"
+    @echo "  wrangler secret put --env production GROQ_API_KEY"
+
+cf-list-secrets:
+    wrangler secret list --env production --format pretty
+
+
+cf-clean-dist:
+    @mkdir -p ./dist
+    @rm -rf ./dist/frontend-target
+
+
+# WARNING: *confusing terminology*
+#   "wrangler dev" uses "--env production" config namespace as defined in wrangler.toml
+#   the "--env produciton" means we are using env-isolated confs in Cloudflare remote called literal 'production'
+#   the "cloudflare local" mode here means we are running a Cloudflare Worker env on our host
+cf-local: cf-clean-dist
+    @echo "Building frontend for Cloudflare local..."
+    cd ../../ && \
+    just frontend-build-cloudflare-local
+    mv ./dist/frontend-local ./dist/frontend-target
+    @echo "Deploying to Cloudflare local dev mode - access at http://localhost:30001/"
+    wrangler dev --env production --port 30001
+
+
+# Deploy to Cloudflare (using remote build)
+cf-deploy: cf-clean-dist
+    @echo "Building frontend for Cloudflare deployment..."
+    cd ../.. && \
+    just frontend-build-cloudflare-prod
+    mv ./dist/frontend-prod ./dist/frontend-target
+    @echo "Deploying to Cloudflare Cloud..."
+    wrangler deploy --env production
+
+cf-tail:
+    wrangler tail perplexed-worker --format pretty --env production
+
+cf-status:
+    wrangler deployments status --env production

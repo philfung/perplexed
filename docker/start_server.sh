@@ -1,11 +1,26 @@
 #!/bin/bash -e
 
-# must have all of these env vars
-test -n "$GOOGLE_SEARCH_API_KEY" && echo "✅ GOOGLE_SEARCH_API_KEY" || echo "❓ GOOGLE_SEARCH_API_KEY"
-test -n "$GOOGLE_SEARCH_ENGINE_ID" && echo "✅ GOOGLE_SEARCH_ENGINE_ID" || echo "❓ GOOGLE_SEARCH_ENGINE_ID"
-test -n "$GROQ_API_KEY" && echo "✅ GROQ_API_KEY" || echo "❓ GROQ_API_KEY"
-echo "✅ DOMAINS_ALLOW=$DOMAINS_ALLOW"
+show_first_last_3() {
+    # show a little bit of secrets to verify that env vars are injected into your remote envs
+    # you do not need this helper once you successfully deploy and verify your app
+    local str="$@"
+    echo "${str:0:3}...${str: -3}"
+}
 
+# must have all of these env vars
+(
+    echo "✔︎ GOOGLE_SEARCH_ENGINE_ID=$GOOGLE_SEARCH_ENGINE_ID"
+    test -n "$GOOGLE_SEARCH_API_KEY" && \
+        echo "✅ GOOGLE_SEARCH_API_KEY=$(show_first_last_3 $GOOGLE_SEARCH_API_KEY)" || \
+        echo "❓ GOOGLE_SEARCH_API_KEY"
+    test -n "$GOOGLE_SEARCH_ENGINE_ID" && \
+        echo "✅ GOOGLE_SEARCH_ENGINE_ID=$(show_first_last_3 $GOOGLE_SEARCH_ENGINE_ID)" || \
+        echo "❓ GOOGLE_SEARCH_ENGINE_ID"
+    test -n "$GROQ_API_KEY" && \
+        echo "✅ GROQ_API_KEY=$(show_first_last_3 $GROQ_API_KEY)" || \
+        echo "❓ GROQ_API_KEY"
+    echo "✅ DOMAINS_ALLOW=$DOMAINS_ALLOW"
+) | tee /app/env_inspect.txt
 
 cd /app/backend
 

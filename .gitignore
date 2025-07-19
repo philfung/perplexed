@@ -9,3 +9,7 @@ node_modules
 venv
 .env.production
 build*/
+*/cloudflare/worker-configuration.d.ts
+*/cloudflare/index.js
+.wrangler/
+.dev.vars

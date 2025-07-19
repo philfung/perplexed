@@ -1,0 +1,46 @@
+# tips: if you prefer the jsonc format do this
+#   uvx remarshal --if toml --of json wrangler.toml | jq . > wrangler.jsonc
+
+name = "perplexed-worker"  # Change this to your preferred Worker name
+main = "index.ts"
+compatibility_date = "2025-07-18"
+workers_dev = false
+
+[observability]
+enabled = true
+
+[assets]
+directory = "./dist/frontend-target"
+binding = "ASSETS"
+
+[env.production.vars]
+DOMAINS_ALLOW = "https://perplexed-worker-production.anthonywu.workers.dev"
+
+[env.production]
+workers_dev = true
+
+# IFF hosting on a Cloudflare subdomain: route = { pattern = "perplexed-demo.anthony-wu.com/*", zone_name = "anthony-wu.com"}
+
+# Container configuration
+[[env.production.containers]]
+max_instances = 2
+name = "perplexed-container"
+class_name = "PerplexedContainer"
+image = "../../Dockerfile-cloudflare"
+
+# ^ wrangler deploy will use wrangler containers build/push and publish to
+# registry.cloudflare.com/<your_account_id>/<container_name>
+# NOTE: AFAIK, as of 2025-07-17
+# wrangler CLI cannot send --build-arg values into the Dockerfile
+# https://developers.cloudflare.com/containers/image-management/
+
+# Durable Objects binding for container orchestration
+[[env.production.durable_objects.bindings]]
+name = "PERPLEXED_CONTAINER"
+class_name = "PerplexedContainer"
+# matches index.ts: env: { PERPLEXED_CONTAINER: DurableObjectNamespace<PerplexedContainer> },
+
+# Durable Objects migrations
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PerplexedContainer"]
