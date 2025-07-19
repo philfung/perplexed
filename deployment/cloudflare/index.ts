@@ -10,7 +10,7 @@ export class PerplexedContainer extends Container {
   envVars = {
     DOMAINS_ALLOW: this.env.DOMAINS_ALLOW,
     GOOGLE_SEARCH_API_KEY: this.env.GOOGLE_SEARCH_API_KEY,
-    GOOGLE_SEARCH_ENGINE_ID: this.env.GOOGLE_SEARCH_ENGINE_ID2,
+    GOOGLE_SEARCH_ENGINE_ID: this.env.GOOGLE_SEARCH_ENGINE_ID,
     GROQ_API_KEY: this.env.GROQ_API_KEY,
   };
 };
