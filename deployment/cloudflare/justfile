@@ -18,23 +18,40 @@ cf-doctor:
 
 # Guide user through putting secrets from .env file to remote secrets store
 cf-setup-secrets env_file="../../backend/.env":
-    @echo "Importing secrets to Cloudflare from {{ env_file }}..."
-    @test -f {{ env_file }} || (echo "Please provide the backend/.env file at root of the repo." && exit 1)
-    @echo "Reading from {{ env_file }}, review the suggested commands and run them yourself, if any are applicable as secrets:"; \
-    sed s/'export '//g ../../backend/.env | grep -v '^#' | grep -v '^$' | \
-    while IFS='=' read -r key value; do \
-        echo "  wrangler secret put ${key} ${value}"; \
-    done
-    wrangler secrets-store store create perplexed-cf-store --remote
-    wrangler secret put GOOGLE_SEARCH_API_KEY
+    @echo "Run these commands manually to paste in the relevant secrets for the Python backend:"
+    @echo "  wrangler secret put --env production GOOGLE_SEARCH_API_KEY"
+    @echo "  wrangler secret put --env production GOOGLE_SEARCH_ENGINE_ID"
+    @echo "  wrangler secret put --env production GROQ_API_KEY"
+
+cf-list-secrets:
+    wrangler secret list --env production | jq -r '.[].name'
 
 # Build frontend for Cloudflare deployment
 cf-build-frontend:
     @echo "Building frontend for Cloudflare deployment..."
     cd ../.. && just frontend-build-cloudflare
 
+cf-dev:
+    # wrangler dev mode = frontend in staging mode
+    # we run "build-image-staging" image and worker at localhost:30000
+    # Chrome dev tools available
+    wrangler dev --env production --port 30000
+
+cf-dev-exec cmd="/bin/bash":
+    docker exec -it $(docker ps --format json | \
+        jq -r 'select(.Image | contains("cloudflare-dev/perplexed")) | .ID') \
+        {{ cmd }}
+
+cf-dev-tail:
+    just cf-dev-exec 'tail -f /var/log/app/backend.log'
 
 # Deploy to Cloudflare (using remote build)
 cf-deploy:
     @echo "Deploying to Cloudflare..."
     wrangler deploy --env production
+
+cf-tail:
+    wrangler tail perplexed-worker --format pretty --env production
+
+cf-status:
+    wrangler deployments status --env production

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@cloudflare/containers": "^0.0.23"
+    "@cloudflare/containers": "^0.0.23",
+    "@cloudflare/workers-types": "4.20250718.0"
   }
 }

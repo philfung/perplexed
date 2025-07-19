@@ -1,12 +1,18 @@
+# tips: if you prefer the jsonc format do this
+#   uvx remarshal --if toml --of json wrangler.toml | jq . > wrangler.jsonc
+
 name = "perplexed-worker"  # Change this to your preferred Worker name
 main = "index.ts"
 compatibility_date = "2025-07-17"
 workers_dev = false
 
+[observability]
+enabled = true
+
 [env.production]
-# IFF hosting on a Cloudflare subdomain: route = { pattern = "perplexed-demo.anthony-wu.com/*", zone_name = "anthony-wu.com"}
-vars = { DOMAINS_ALLOW = "https://perplexed-worker-production.anthonywu.workers.dev" }
 workers_dev = true
+vars.DOMAINS_ALLOW = "https://perplexed-worker-production.anthonywu.workers.dev"
+# IFF hosting on a Cloudflare subdomain: route = { pattern = "perplexed-demo.anthony-wu.com/*", zone_name = "anthony-wu.com"}
 
 # Container configuration
 [[env.production.containers]]
@@ -14,33 +20,18 @@ max_instances = 2
 name = "perplexed-container"
 class_name = "PerplexedContainer"
 image = "../../Dockerfile"
+
 # ^ wrangler deploy will use wrangler containers build/push and publish to
 # registry.cloudflare.com/<your_account_id>/<container_name>
 # NOTE: AFAIK, as of 2025-07-17
 # wrangler CLI cannot send --build-arg values into the Dockerfile
+# https://developers.cloudflare.com/containers/image-management/
 
 # Durable Objects binding for container orchestration
 [[env.production.durable_objects.bindings]]
 name = "PERPLEXED_CONTAINER"
 class_name = "PerplexedContainer"
-
-# just manage these via Cloudflare Web Dashboard "Secret Store" pages
-# https://developers.cloudflare.com/secrets-store/
-# "Store ID" is displayed on the UI of https://dash.cloudflare.com/<your_account_id>/secrets-store/
-[[env.production.secrets_store_secrets]]
-binding = "GOOGLE_SEARCH_API_KEY"
-store_id = "1e5db54861534adeaf73a52f30d12b4f"
-secret_name = "perplexed-demo-google-search-api-key"
-
-[[env.production.secrets_store_secrets]]
-binding = "GOOGLE_SEARCH_ENGINE_ID"
-store_id = "1e5db54861534adeaf73a52f30d12b4f"
-secret_name = "perplexed-demo-google-search-engine-id"
-
-[[env.production.secrets_store_secrets]]
-binding = "GROQ_API_KEY"
-store_id = "1e5db54861534adeaf73a52f30d12b4f"
-secret_name = "perplexed-demo-groq-api-key"
+# matches index.ts: env: { PERPLEXED_CONTAINER: DurableObjectNamespace<PerplexedContainer> },
 
 # Durable Objects migrations
 [[migrations]]
