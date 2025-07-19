@@ -22,12 +22,10 @@ show_first_last_3() {
     echo "✅ DOMAINS_ALLOW=$DOMAINS_ALLOW"
 ) | tee /app/env_inspect.txt
 
-/app/groq_test.py 2>&1 > /app/groq_result.txt || true
-
 cd /app/backend
 
 # this sanity checks env vars, docker run --env, etc
-# /app/groq_test.py
+/app/groq_test.py
 
 log_dir=/var/log/app
 mkdir -p $log_dir
