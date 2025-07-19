@@ -3,15 +3,22 @@
 
 name = "perplexed-worker"  # Change this to your preferred Worker name
 main = "index.ts"
-compatibility_date = "2025-07-17"
+compatibility_date = "2025-07-18"
 workers_dev = false
 
 [observability]
 enabled = true
 
+[assets]
+directory = "./dist/frontend-target"
+binding = "ASSETS"
+
+[env.production.vars]
+DOMAINS_ALLOW = "https://perplexed-worker-production.anthonywu.workers.dev"
+
 [env.production]
 workers_dev = true
-vars.DOMAINS_ALLOW = "https://perplexed-worker-production.anthonywu.workers.dev"
+
 # IFF hosting on a Cloudflare subdomain: route = { pattern = "perplexed-demo.anthony-wu.com/*", zone_name = "anthony-wu.com"}
 
 # Container configuration
@@ -19,7 +26,7 @@ vars.DOMAINS_ALLOW = "https://perplexed-worker-production.anthonywu.workers.dev"
 max_instances = 2
 name = "perplexed-container"
 class_name = "PerplexedContainer"
-image = "../../Dockerfile"
+image = "../../Dockerfile-cloudflare"
 
 # ^ wrangler deploy will use wrangler containers build/push and publish to
 # registry.cloudflare.com/<your_account_id>/<container_name>

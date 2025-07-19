@@ -1,5 +1,8 @@
 FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 
+# this Dockerfile runs both the frontend/backend in a monolith container
+# frontend is served by nginx static
+# backend is reverse proxied to the fastapi app running at localhost:30001 in container
 ARG FRONTEND_BUILD_DIR=frontend/build-prod
 
 # Enable bytecode compilation.

@@ -1,0 +1,39 @@
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+
+# Enable bytecode compilation.
+ENV UV_COMPILE_BYTECODE=1
+# Copy from the cache instead of linking since it's a mounted volume.
+ENV UV_LINK_MODE=copy
+ENV UV_PYTHON_DOWNLOADS=never
+
+COPY backend /app/backend
+
+# Install the project's backend dependencies.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    grep PRETTY_NAME /etc/os-release && \
+    python -V && \
+    echo $(uv --version) && \
+    uv pip install --python /usr/local/bin/python -r /app/backend/requirements.txt && \
+    ls -ald /app/backend/* && \
+    gunicorn --version && \
+    python -c 'import groq'
+
+# In Cloudflare Containers, the container only runs the backend
+# frontend assets are served via Cloudflare Worker assets (see wrangler.toml)
+
+WORKDIR /app/backend
+EXPOSE 30001
+CMD [ \
+    "gunicorn", \
+    "--bind", \
+    "0.0.0.0:30001", \
+    "--workers", \
+    "4", \
+    "--worker-class", \
+    "uvicorn.workers.UvicornWorker", \
+    "--max-requests", \
+    "1000", \
+    "--max-requests-jitter", \
+    "50", \
+    "fastapi_app:app" \
+]

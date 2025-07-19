@@ -1,8 +1,10 @@
-*~
-*.pyc
-.DS_Store
-.env*
+**/*.pyc
+**/*~
+**/.DS_Store
+**/.mypy_cache/
 **/.ruff_cache/
-.venv/
-__pycache__/
+**/__pycache__/
 **/node_modules
+.env*
+.venv/
+backend/archive/

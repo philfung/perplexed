@@ -50,6 +50,12 @@ async def test():
     return "HELLO"
 
 
+@app.get("/env", response_model=Dict)
+async def env_report():
+    """Simple env verification endpoint."""
+    return Deployment.ENV_REPORT
+
+
 def transform_backend_to_frontend_response(
     stage_response: StreamSearchResponse, websearch_docs: List[Dict] = None
 ) -> str:

@@ -24,18 +24,24 @@ cf-setup-secrets env_file="../../backend/.env":
     @echo "  wrangler secret put --env production GROQ_API_KEY"
 
 cf-list-secrets:
-    wrangler secret list --env production | jq -r '.[].name'
+    wrangler secret list --env production --format pretty
 
-# Build frontend for Cloudflare deployment
-cf-build-frontend:
-    @echo "Building frontend for Cloudflare deployment..."
-    cd ../.. && just frontend-build-cloudflare
 
-cf-dev:
-    # wrangler dev mode = frontend in staging mode
-    # we run "build-image-staging" image and worker at localhost:30000
-    # Chrome dev tools available
-    wrangler dev --env production --port 30000
+cf-clean-dist:
+    @mkdir -p ./dist
+    @rm -rf ./dist/frontend-target
+
+# NOTE: *confusing terminology*
+#   "wrangler dev" uses "--env production" namespace as defined in wrangler.toml
+#   the "cloudflare-dev" mode here means we are developing on our host
+#   the "--env produciton" means we are using env-isolated confs in Cloudflare remote called literal 'production'
+cf-local: cf-clean-dist
+    @echo "Building frontend for Cloudflare local..."
+    cd ../../ && \
+    just frontend-build-cloudflare-local
+    mv ./dist/frontend-local ./dist/frontend-target
+    @echo "Deploying to Cloudflare local dev mode..."
+    wrangler dev --env production --port 30001
 
 cf-dev-exec cmd="/bin/bash":
     docker exec -it $(docker ps --format json | \
@@ -46,8 +52,12 @@ cf-dev-tail:
     just cf-dev-exec 'tail -f /var/log/app/backend.log'
 
 # Deploy to Cloudflare (using remote build)
-cf-deploy:
-    @echo "Deploying to Cloudflare..."
+cf-deploy: cf-clean-dist
+    @echo "Building frontend for Cloudflare deployment..."
+    cd ../.. && \
+    just frontend-build-cloudflare-prod
+    mv ./dist/frontend-prod ./dist/frontend-target
+    @echo "Deploying to Cloudflare Cloud..."
     wrangler deploy --env production
 
 cf-tail:
