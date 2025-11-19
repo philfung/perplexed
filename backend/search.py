@@ -23,8 +23,9 @@ CONFIG = json.load(open(current_dir_path + '/config.json'))
 DOMAINS_ALLOW = CONFIG['DOMAINS_ALLOW']
 JSON_STREAM_SEPARATOR = "[/PERPLEXED-SEPARATOR]"
 GROQ_CLIENT = groq.Groq(api_key = CONFIG['GROQ_API_KEY'])
+GROQ_MODEL = 'openai/gpt-oss-20b'
 #GROQ_MODEL = 'mixtral-8x7b-32768'
-GROQ_MODEL = 'llama3-8b-8192'
+#GROQ_MODEL = 'llama3-8b-8192'
 # GROQ_MODEL = 'llama3-groq-8b-8192-tool-use-preview'
 GROQ_LIMIT_TOKENS_PER_MINUTE = 30000
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
