@@ -18,7 +18,7 @@ from query_cache import QueryCache
 
 http_client = httpx.AsyncClient()
 GROQ_CLIENT = groq.AsyncGroq(api_key=Secrets.GROQ_API_KEY, http_client=http_client)
-GROQ_MODEL = 'llama3-8b-8192'
+GROQ_MODEL = 'openai/gpt-oss-20b'
 GROQ_LIMIT_TOKENS_PER_MINUTE = 30000
 WEBSEARCH_DOMAINS_BLACKLIST = ["quora.com", "www.quora.com"]
 WEBSEARCH_RESULT_MIN_TOKENS = 50
